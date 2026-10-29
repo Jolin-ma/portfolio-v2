@@ -1,0 +1,103 @@
+/* GalleryCard.module.css */
+
+.card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Tall 2:3 frame, square corners, like a print on a wall */
+.frame {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: var(--plum);
+  transition: transform 0.8s var(--ease-out);
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  /* hidden layers are clipped away to the bottom edge */
+  clip-path: inset(100% 0 0 0);
+}
+
+.layer > * {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The image currently showing sits on top, fully revealed */
+.layer[data-state="top"] {
+  z-index: 2;
+  clip-path: inset(0 0 0 0);
+}
+
+/*
+  After the first hover, each image that becomes the top one rolls up from the
+  bottom edge. A keyframe animation (not a transition) so it replays every time:
+  a layer coming back from "under" is already fully revealed, so a transition
+  would have nothing to animate.
+*/
+.frame[data-rolling] .layer[data-state="top"] {
+  animation: rollUp 0.8s var(--ease-out);
+}
+
+@keyframes rollUp {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame[data-rolling] .layer[data-state="top"] {
+    animation: none;
+  }
+}
+
+/* The previous image stays put underneath while the new one covers it */
+.layer[data-state="under"] {
+  z-index: 1;
+  clip-path: inset(0 0 0 0);
+}
+
+.name {
+  margin-top: var(--space-4);
+  font-size: clamp(1.05rem, 1.4vw, 1.3rem);
+  letter-spacing: -0.01em;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.arrow {
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(-0.5em);
+  transition: width 0.8s var(--ease-out), opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+
+@media (min-width: 1025px) and (hover: hover) {
+  .card:hover .frame {
+    transform: scale(1.03);
+  }
+
+  .card:hover .arrow {
+    width: 1.3em;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.card:focus-visible .arrow {
+  width: 1.3em;
+  opacity: 1;
+  transform: none;
+}

@@ -1,0 +1,84 @@
+/* NextProject.module.css */
+
+.band {
+  display: block;
+  text-decoration: none;
+  padding-block: var(--space-6);
+  overflow: hidden;
+}
+
+/*
+  With a banner picture (3168 x 1344): the band is a little shorter than the picture
+  (about 25%), so a thin strip is cropped from the top and bottom on desktop, never
+  gets shorter than 260px, and anchors the
+  picture right on narrow screens so the bottle stays in view. The text sits at
+  the bottom left, over the deeper water. A navy wash lifts cream text on the
+  light water bands from about 2.3:1 to about 5:1.
+*/
+.withBanner {
+  position: relative;
+  aspect-ratio: 3168 / 1000;
+  min-height: 260px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.banner {
+  object-fit: cover;
+  object-position: right center;
+}
+
+.wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(4, 24, 84, 0.5) 0%, rgba(4, 24, 84, 0.5) 38%, rgba(4, 24, 84, 0) 66%);
+  mask-image: linear-gradient(to bottom, transparent 30%, #000 50%);
+}
+
+.withBanner .inner {
+  position: relative;
+  width: 100%;
+}
+
+.inner {
+  position: relative;
+  width: 100%;
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: var(--text-h1);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.title span {
+  display: inline-block;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.art {
+  flex: 0 0 auto;
+  width: clamp(110px, 16vw, 200px);
+  aspect-ratio: 4 / 5;
+  transition: transform 0.8s var(--ease-out);
+}
+
+@media (min-width: 1025px) and (hover: hover) {
+  .band:hover .title span {
+    transform: translateX(0.3em);
+  }
+
+  .band:hover .art {
+    transform: rotate(-4deg) scale(1.05);
+  }
+}

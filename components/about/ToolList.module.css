@@ -1,0 +1,48 @@
+/* ToolList.module.css */
+
+.tools {
+  background: var(--cream);
+  padding: var(--space-7) 6vw;
+  text-align: center;
+}
+
+.label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 0.3em;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: clamp(2rem, 4.4vw, 4rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Highlighted tools: tomato, the one accent that passes contrast on cream at this size */
+.linked {
+  color: var(--tomato);
+  text-decoration: none;
+  transition: color 0.3s var(--ease-out);
+}
+
+@media (min-width: 1025px) and (hover: hover) {
+  .linked:hover {
+    color: var(--plum);
+  }
+}
+
+.linked:focus-visible {
+  text-decoration: underline;
+}

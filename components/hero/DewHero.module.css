@@ -1,0 +1,315 @@
+/*
+  DewHero.module.css
+  Layout, then the animated layer. Only transform and opacity are animated.
+
+  Sizing trick: .art is a size container and .stage inside it is sized like
+  object-fit: cover (the larger of "fill the width" and "fill the height"),
+  pinned to the right edge. Inside the stage, 1cqw is 1% of the artwork width
+  and 1cqh is 1% of its height, so the drops, sparkles and glow always line up
+  with the illustration however the section is cropped.
+*/
+
+.hero {
+  --hero-bg: #f9ecd6; /* sampled from the artwork's cream */
+  position: relative;
+  overflow: hidden;
+  background: var(--hero-bg);
+  color: var(--plum);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Artwork ---------- */
+
+.art {
+  position: relative;
+  order: 2;
+  width: 100%;
+  aspect-ratio: 4 / 3; /* mobile crop, anchored right so the tube stays in */
+  container-type: size;
+  overflow: hidden;
+}
+
+.stage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: max(100cqw, calc(100cqh * 1344 / 752));
+  height: max(100cqh, calc(100cqw * 752 / 1344));
+  container-type: size;
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ---------- Copy ---------- */
+
+.copy {
+  position: relative;
+  z-index: 2;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding-top: calc(var(--header-h) + var(--space-5)); /* clears the fixed header */
+  padding-bottom: var(--space-5);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.tags li {
+  padding: 0.35rem 1rem;
+  border: 2px solid currentColor;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  font-size: var(--text-small);
+}
+
+.copy h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  line-height: 1.05;
+}
+
+.subline {
+  font-size: var(--text-lead);
+  line-height: 1.4;
+  max-width: 28ch;
+}
+
+@media (min-width: 861px) {
+  .hero {
+    height: clamp(520px, 82svh, 860px);
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .art {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+  }
+
+  .copy {
+    padding-top: var(--header-h);
+    padding-bottom: 0;
+  }
+
+  .copy > * {
+    max-width: min(34rem, 44%);
+  }
+
+  /* Drops in the left third sit behind the headline, so they fade further */
+  .quiet {
+    --zone: 0.5;
+  }
+}
+
+/* ---------- Falling drops ---------- */
+
+/*
+  --x, --y        resting position (also where it sits with reduced motion)
+  --size          width, in cqw
+  --dur           seconds for one fall: bigger number = slower drop
+  --delay         negative seconds, so the first screen already has drops mid-fall
+  --o             base opacity (small drops are fainter)
+*/
+.drop {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  margin-left: calc(var(--size) / -2);
+  opacity: calc(var(--o) * var(--zone, 1));
+  animation: fall var(--dur) linear var(--delay) infinite;
+  will-change: transform;
+}
+
+.drop svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Starts just above the top edge, ends just below the bottom edge */
+@keyframes fall {
+  from {
+    transform: translate3d(0, calc(-1 * var(--y) - 14cqh), 0);
+  }
+  to {
+    transform: translate3d(0, calc(100cqh - var(--y) + 4cqh), 0);
+  }
+}
+
+/* The sideways drift lives on the svg so it doesn't fight the fall */
+.sway {
+  animation: sway var(--sway-dur) ease-in-out var(--delay) infinite alternate;
+}
+
+@keyframes sway {
+  from {
+    transform: translate3d(calc(-1 * var(--sway)), 0, 0);
+  }
+  to {
+    transform: translate3d(var(--sway), 0, 0);
+  }
+}
+
+/* ---------- Sparkles ---------- */
+
+/* --dur is the twinkle length, 2 to 4 seconds. --delay staggers them. */
+.sparkle {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+  animation: twinkle var(--dur) ease-in-out var(--delay) infinite;
+  will-change: transform, opacity;
+}
+
+.sparkle svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ---------- Sun glow ---------- */
+
+/*
+  A soft radial glow centred on the sun. The sun is baked into the image, so
+  this sits on top and breathes instead of scaling the sun itself.
+*/
+.sun {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: calc(var(--d) * 1.3);
+  aspect-ratio: 1;
+  margin: calc(var(--d) * -0.65) 0 0 calc(var(--d) * -0.65);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 214, 150, 0.55) 0%,
+    rgba(255, 214, 150, 0.25) 45%,
+    rgba(255, 214, 150, 0) 70%
+  );
+  animation: pulse 7s ease-in-out infinite; /* 6 to 8 seconds */
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+/* ---------- Tube drip ---------- */
+
+/*
+  One cycle (--cycle, 5.5s): fade in, slide down the tube (0 to 72%, slow at
+  both ends), fade out near the base (56 to 72%), then rest until it repeats.
+*/
+.drip {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  margin-left: calc(var(--size) / -2);
+  opacity: 0;
+  animation: drip var(--cycle) ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.drip svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@keyframes drip {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  8% {
+    opacity: 1;
+  }
+  56% {
+    opacity: 1;
+  }
+  72% {
+    opacity: 0;
+    transform: translate3d(0, var(--travel), 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, var(--travel), 0);
+  }
+}
+
+/* ---------- Off screen: pause (set by the observer in DewHero.tsx) ---------- */
+
+.hero[data-paused="true"] .drop,
+.hero[data-paused="true"] .sway,
+.hero[data-paused="true"] .sparkle,
+.hero[data-paused="true"] .sun,
+.hero[data-paused="true"] .drip {
+  animation-play-state: paused;
+}
+
+/* ---------- Reduced motion: everything visible, nothing moving ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .drop,
+  .sway,
+  .sparkle,
+  .sun,
+  .drip {
+    animation: none;
+    will-change: auto;
+  }
+
+  .sun {
+    opacity: 0.85;
+  }
+
+  /* Rests partway down the tube */
+  .drip {
+    opacity: 1;
+    transform: translate3d(0, calc(var(--travel) * 0.4), 0);
+  }
+}

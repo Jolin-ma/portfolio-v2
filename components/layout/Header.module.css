@@ -1,0 +1,78 @@
+/* Header.module.css */
+
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: var(--gutter);
+  pointer-events: none; /* the bar is see-through; only its children catch clicks */
+}
+
+.header > * {
+  pointer-events: auto;
+}
+
+/* No background behind the logo: its color follows the band underneath
+   (data-tone, set in Header.tsx). Plum on light bands, cream on dark. */
+.header {
+  --logo-ink: var(--plum);
+}
+
+.header[data-tone="dark"] {
+  --logo-ink: var(--cream);
+}
+
+.logo {
+  position: relative;
+  top: 14px; /* sits a little below the header's middle line */
+  transition: color 0.3s;
+}
+
+.menuButton {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--tomato);
+  transition: transform 0.36s var(--ease-snap);
+}
+
+/* Two bars drawn with ::before / ::after */
+.bars::before,
+.bars::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--plum);
+  transition: transform 0.36s var(--ease-snap);
+}
+
+.bars::before {
+  top: 19px;
+}
+
+.bars::after {
+  bottom: 19px;
+}
+
+@media (min-width: 1025px) and (hover: hover) {
+  .menuButton:hover {
+    transform: scale(1.08);
+  }
+
+  .menuButton:hover .bars::before {
+    transform: translateY(-2px);
+  }
+
+  .menuButton:hover .bars::after {
+    transform: translateY(2px);
+  }
+}

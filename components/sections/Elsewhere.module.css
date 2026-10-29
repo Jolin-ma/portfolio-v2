@@ -1,0 +1,81 @@
+/* Elsewhere.module.css */
+
+.elsewhere {
+  background: var(--cream);
+  padding: var(--space-7) 6vw;
+}
+
+.title {
+  font-size: clamp(2.6rem, 4.4vw, 4rem);
+  margin-bottom: var(--space-6);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+/* Tall card: title top-left, artwork filling the bottom */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 287 / 520;
+  padding: var(--space-4);
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.art {
+  /* Edge to edge: cancel the card's side and bottom padding */
+  width: calc(100% + 2 * var(--space-4));
+  max-width: none;
+  height: auto;
+  margin: 0 calc(-1 * var(--space-4)) calc(-1 * var(--space-4));
+  transform-origin: bottom center;
+  transition: transform 0.8s var(--ease-out);
+}
+
+@media (min-width: 1025px) and (hover: hover) {
+  .card:hover .art {
+    transform: scale(1.04);
+  }
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 767px) {
+  .elsewhere {
+    padding-inline: var(--gutter);
+  }
+
+  .grid {
+    gap: var(--space-3);
+  }
+
+  .card {
+    aspect-ratio: 3 / 4;
+    padding: var(--space-3);
+  }
+
+  .art {
+    width: calc(100% + 2 * var(--space-3));
+    margin: 0 calc(-1 * var(--space-3)) calc(-1 * var(--space-3));
+  }
+}

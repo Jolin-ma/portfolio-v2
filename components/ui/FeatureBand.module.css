@@ -1,0 +1,283 @@
+/* FeatureBand.module.css
+   Desktop proportions: split bands are half as tall as they are wide
+   (720px at 1440px), tiles are squares. Side padding is 6vw throughout. */
+
+.band {
+  --pad: 6vw;
+  position: relative;
+  overflow: hidden;
+}
+
+.title {
+  font-size: clamp(2.4rem, 4.4vw, 4rem);
+  line-height: 1;
+}
+
+.body {
+  max-width: 26em;
+  margin-top: var(--space-4);
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  line-height: 1.45;
+}
+
+/* The longer description sits closer to the summary above it */
+.more {
+  margin-top: var(--space-3);
+}
+
+.link {
+  margin-top: var(--space-5);
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: clamp(1.6rem, 2.5vw, 2.25rem);
+  letter-spacing: -0.02em;
+}
+
+/* RollLink sets its own weight; make the big link word heavy */
+.link a {
+  font-weight: 800;
+}
+
+.media {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* ---------- split / splitReverse ---------- */
+
+.split,
+.splitReverse {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: min(50vw, 760px);
+}
+
+.split .text,
+.splitReverse .text {
+  align-self: center;
+  padding: var(--space-6) var(--pad);
+}
+
+.split .media,
+.splitReverse .media {
+  /* artwork sits on the bottom edge, like it's standing in the band */
+  height: 100%;
+  padding-top: var(--space-5);
+}
+
+.split .media {
+  order: -1; /* artwork on the left */
+}
+
+/* Sized by width (rows have no fixed height, so % heights won't resolve).
+   34vw x 5/4 = 42.5vw tall, a little shorter than the 50vw band. */
+.split .media > *,
+.splitReverse .media > * {
+  width: min(80%, 34vw, 600px);
+  height: auto;
+  aspect-ratio: 4 / 5;
+}
+
+/* fitMedia: the band is at least as tall as a 34vw-wide 4:5 picture,
+   and the picture always fills the band's full height (so it grows too
+   if the text column is taller). Absolute, so it can't drive the height. */
+.fit {
+  min-height: calc(34vw * 5 / 4);
+}
+
+.fit .media {
+  position: relative;
+  padding-top: 0;
+}
+
+.split.fit .media > *,
+.splitReverse.fit .media > * {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  height: 100%;
+  aspect-ratio: 4 / 5;
+}
+
+/* ---------- tile ---------- */
+
+.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.tile {
+  aspect-ratio: 1;
+  padding: var(--space-6) var(--pad);
+}
+
+.tile .text {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tile .link {
+  margin-top: auto; /* pushed to the bottom-left corner */
+}
+
+/* Keep the longer description in the left column, clear of the artwork */
+.tile .more {
+  max-width: 46%;
+}
+
+.tile .media {
+  position: absolute;
+  right: 4%;
+  bottom: 0;
+  width: 52%;
+  aspect-ratio: 4 / 5;
+}
+
+.tile .media > * {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- statement: text only ---------- */
+
+.statement {
+  display: flex;
+  align-items: flex-end;
+  min-height: min(42vw, 600px);
+  padding: var(--space-6) var(--pad);
+}
+
+.statement .title {
+  font-size: clamp(2.8rem, 6vw, 5.4rem);
+}
+
+/* ---------- cover: the picture is the band ---------- */
+
+.cover {
+  aspect-ratio: 1344 / 752; /* the wide band art's own shape */
+  min-height: 560px;
+  padding: var(--space-6) var(--pad);
+}
+
+.cover .text {
+  position: relative;
+  z-index: 1;
+  max-width: 40%; /* stays over the picture's empty left side */
+}
+
+.cover .media {
+  position: absolute;
+  inset: 0;
+}
+
+.cover .media > * {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center; /* if cropped, lose the empty side first */
+}
+
+/* Tiles with a real picture: fill the art box */
+.tile .media > img {
+  object-fit: cover;
+}
+
+/* ---------- tablet ---------- */
+
+@media (max-width: 1024px) {
+  .tile {
+    padding: var(--space-5) var(--pad);
+  }
+
+  .tile .media {
+    width: 46%;
+  }
+}
+
+/* ---------- phones: text first, then the artwork ---------- */
+
+@media (max-width: 767px) {
+  .split,
+  .splitReverse,
+  .pair {
+    grid-template-columns: 1fr;
+  }
+
+  .split .media {
+    order: 0;
+  }
+
+  .split .text,
+  .splitReverse .text {
+    padding: var(--space-6) var(--gutter) var(--space-4);
+  }
+
+  .split .media > *,
+  .splitReverse .media > * {
+    height: auto;
+    width: min(70%, 300px);
+  }
+
+  .fit {
+    min-height: 0;
+  }
+
+  .split.fit .media > *,
+  .splitReverse.fit .media > * {
+    position: static;
+    transform: none;
+    width: min(70%, 300px);
+    height: auto;
+  }
+
+  /* Cover: text on the band color, then the whole picture under it */
+  .cover {
+    aspect-ratio: auto;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .cover .text {
+    max-width: none;
+    padding: var(--space-6) var(--gutter) var(--space-4);
+  }
+
+  .cover .media {
+    position: relative;
+  }
+
+  .cover .media > * {
+    height: auto;
+  }
+
+  /* Tiles: artwork moves out of the corner and sits under the text */
+  .tile .more {
+    max-width: 26em;
+  }
+
+  .tile {
+    aspect-ratio: auto;
+    padding: var(--space-6) var(--gutter) 0;
+  }
+
+  .tile .text {
+    height: auto;
+  }
+
+  .tile .link {
+    margin-top: var(--space-4);
+  }
+
+  .tile .media {
+    position: relative;
+    right: auto;
+    width: 60%;
+    margin: var(--space-4) 0 0 auto;
+  }
+}

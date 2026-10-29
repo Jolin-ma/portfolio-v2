@@ -1,0 +1,36 @@
+/* Hero.module.css */
+
+.hero {
+  /* Fallbacks match heroPairs[0], in case the picker script doesn't run */
+  background: var(--hero-bg, var(--indigo));
+  color: var(--hero-ink, var(--cream));
+  min-height: 100vh;  /* fallback for browsers without svh */
+  min-height: 100svh; /* fills the screen; svh ignores mobile toolbars so it doesn't jump */
+  display: grid;
+  place-items: center;
+  padding: calc(var(--header-h) + var(--space-5)) 6vw var(--space-6);
+  text-align: center;
+}
+
+.inner {
+  max-width: 16em;
+  font-size: clamp(2.6rem, 6vw, 5.6rem); /* sets the em for both lines */
+}
+
+.title {
+  font-size: 1em;
+  line-height: 0.98;
+  letter-spacing: -0.015em;
+}
+
+.subline {
+  margin-top: 0.35em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: 0.5em;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  color: var(--hero-accent, var(--teal));
+}
+

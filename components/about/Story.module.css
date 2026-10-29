@@ -1,0 +1,47 @@
+/* Story.module.css */
+
+.story {
+  background: var(--pool);
+  color: var(--plum);
+  padding: 0 6vw var(--space-8);
+}
+
+.title {
+  text-align: center;
+  font-size: clamp(2.2rem, 4.4vw, 3.6rem);
+  margin-bottom: var(--space-6);
+}
+
+.chapters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+/* Wide 2:1 frame, like a film still */
+.media {
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+}
+
+.media > * {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.text {
+  max-width: 34em;
+  margin: var(--space-4) auto 0;
+  text-align: center;
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  line-height: 1.5;
+}
+
+@media (max-width: 767px) {
+  .media {
+    aspect-ratio: 4 / 3;
+  }
+}

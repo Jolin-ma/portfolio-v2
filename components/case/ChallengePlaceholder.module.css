@@ -1,0 +1,19 @@
+/* ChallengePlaceholder.module.css */
+
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 2px dashed var(--plum);
+  border-radius: var(--radius-card);
+  background: var(--white);
+}
+
+.heading {
+  font-weight: 800;
+}
+
+.box ol {
+  padding-left: 1.2em;
+}

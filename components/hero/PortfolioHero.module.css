@@ -1,0 +1,487 @@
+/*
+  PortfolioHero.module.css
+  Same approach as the project heroes: .art is a size container and .stage is
+  sized like object-fit: cover, pinned right. Here the stage is a size
+  container too, so 1cqw is 1% of the banner's width and 1cqh is 1% of its
+  height. Only transform and opacity are animated.
+
+  data-paused="true" on .hero (set while it is off screen) pauses the idle loops.
+*/
+
+.hero {
+  --coral: #fa4e4b; /* the artwork's sky (sampled), so the sky above the picture is seamless */
+  --navy: #1f3a7a;
+  --cream: #fff4e2;
+  position: relative;
+  overflow: hidden;
+  background: var(--coral);
+  color: var(--cream);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Artwork ---------- */
+
+.art {
+  position: relative;
+  order: 2;
+  width: 100%;
+  aspect-ratio: 16 / 9; /* mobile crop: the right half of the banner, anchored right so the laptop and all four projects stay in */
+  container-type: size;
+  overflow: hidden;
+}
+
+.stage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: max(100cqw, calc(100cqh * 2880 / 760));
+  height: max(100cqh, calc(100cqw * 760 / 2880));
+  container-type: size;
+  isolation: isolate; /* its own stacking layer, so the disc (z-index -1) stays above the hero background */
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/*
+  Contrast: cream (#FFF4E2) on the coral sky is only about 3.1:1, short of the
+  4.5:1 body text needs. A soft wine wash behind the text lifts it to about 5:1
+  and fades out before the laptop.
+*/
+.scrim {
+  display: none;
+}
+
+/* The finishing disc is only needed on desktop, where the picture fades into the sky above it */
+.disc {
+  display: none;
+}
+
+/* ---------- Copy ---------- */
+
+.copy {
+  position: relative;
+  z-index: 3;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-top: calc(var(--header-h) + var(--space-4));
+  padding-bottom: var(--space-5);
+  background: var(--navy); /* mobile: a navy band above the picture (cream on it is 10:1) */
+  max-width: none;
+}
+
+.copy h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  line-height: 1.05;
+}
+
+.subline {
+  font-size: var(--text-lead);
+  line-height: 1.35;
+  max-width: 32ch;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* Primary button: the desk yellow with navy text (6:1) */
+.copy .cta {
+  background: #f6b92b;
+  color: var(--navy);
+  border-color: var(--navy);
+}
+
+.copy .cta:hover:not(:disabled) {
+  background: #ffd25a;
+  color: var(--navy);
+}
+
+@media (min-width: 861px) {
+  .hero {
+    /* Full screen. The picture is a short wide banner, so it sits full width along the bottom
+       and the coral sky fills the rest (the picture's top edge fades into it, see .photo). */
+    height: 100svh;
+    min-height: 560px;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .art {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+  }
+
+  .stage {
+    right: auto;
+    left: 0;
+    bottom: 0;
+    top: auto;
+    width: 100cqw;
+    height: calc(100cqw * 760 / 2880);
+  }
+
+  /*
+    Fade the picture's top edge into the sky, EXCEPT inside the sun's circle, which stays
+    fully solid. The circle is cut flat by the picture's top edge, so the disc below (same
+    cream, same place, behind the picture) carries it on up into a whole round sun.
+    Two mask layers are added together: the circle (solid) and the top fade.
+  */
+  .photo {
+    -webkit-mask-image: radial-gradient(
+        circle at var(--glow-x) var(--glow-y),
+        #000 calc(var(--disc-size) / 2 - 2cqw),
+        transparent calc(var(--disc-size) / 2 - 0.5cqw)
+      ),
+      linear-gradient(to bottom, transparent 0, #000 16%);
+    mask-image: radial-gradient(
+        circle at var(--glow-x) var(--glow-y),
+        #000 calc(var(--disc-size) / 2 - 2cqw),
+        transparent calc(var(--disc-size) / 2 - 0.5cqw)
+      ),
+      linear-gradient(to bottom, transparent 0, #000 16%);
+  }
+
+  /* The disc: the painted circle, finished above the picture's top edge. It sits behind the picture (z-index -1 inside the stage). */
+  .disc {
+    display: block;
+    position: absolute;
+    z-index: -1;
+    left: calc(var(--glow-x) - var(--disc-size) / 2);
+    top: calc(var(--glow-y) - var(--disc-size) / 2);
+    width: var(--disc-size);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--disc-color) 0 96%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .scrim {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(110, 12, 38, 0.4) 0%,
+      rgba(110, 12, 38, 0.4) 40%,
+      rgba(110, 12, 38, 0) 62%
+    );
+    pointer-events: none;
+  }
+
+  .copy {
+    padding-top: var(--header-h);
+    padding-bottom: 0;
+    background: none;
+  }
+
+  .copy > * {
+    max-width: min(34rem, 50%);
+  }
+}
+
+/* ---------- Glow, the soft sun behind the laptop ---------- */
+
+/* Pulses between 70% and 100% and 1 to 1.03 in size, every --pulse seconds (6 to 8) */
+.glow {
+  position: absolute;
+  left: calc(var(--glow-x) - var(--glow-size) / 2);
+  top: calc(var(--glow-y) - var(--glow-size) / 2);
+  width: var(--glow-size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 244, 200, 0.55) 0%, rgba(255, 244, 200, 0.25) 45%, rgba(255, 244, 200, 0) 70%);
+  pointer-events: none;
+  animation: pulse var(--pulse) ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+/* ---------- Screen shimmer ---------- */
+
+/* A faint light sweep across the screen. The clip-path (set in the component) cuts it to the screen's shape. */
+.screen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sweep {
+  position: absolute;
+  left: 66%;
+  top: 30%;
+  width: 7cqw;
+  height: 60%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+  opacity: 0;
+  transform: skewX(-18deg);
+  /* the first sweep comes at 2.5s, then every --sweep seconds */
+  animation: sweep var(--sweep) ease-in-out 2.5s infinite;
+}
+
+/* The sweep takes the first ~16% of each cycle; the rest is quiet */
+@keyframes sweep {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) skewX(-18deg);
+  }
+  3% {
+    opacity: 1;
+  }
+  16% {
+    opacity: 1;
+    transform: translate3d(26cqw, 0, 0) skewX(-18deg);
+  }
+  19%,
+  100% {
+    opacity: 0;
+    transform: translate3d(26cqw, 0, 0) skewX(-18deg);
+  }
+}
+
+/* ---------- Intro dashes: pop once, fade ---------- */
+
+.dash {
+  animation: dash-pop 0.9s ease-out var(--delay) both;
+}
+
+@keyframes dash-pop {
+  0% {
+    opacity: 0;
+    transform: translate3d(-14px, 0, 0) scaleX(0.2);
+  }
+  30% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(26px, 0, 0) scaleX(1);
+  }
+}
+
+/* ---------- Mug steam ---------- */
+
+.steam {
+  opacity: 0;
+  animation: steam var(--dur) ease-out var(--delay) infinite;
+}
+
+@keyframes steam {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.8);
+  }
+  20% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(6px, var(--rise), 0) scale(1.1);
+  }
+}
+
+/* ---------- Floating projects ---------- */
+
+/*
+  --x, --y, --size   resting spot (center) and width, in % of the banner
+  --from-x/-y        offset from the resting spot back to the laptop screen
+  --intro, --intro-delay   fly-out time and the wait before it starts
+  The spring feel is the cubic-bezier below: its y value goes past 1, so each
+  object overshoots a little and settles back.
+*/
+.float {
+  position: absolute;
+  --top: var(--y-m);
+  --fy: var(--from-y-m);
+  left: var(--x);
+  top: var(--top);
+  width: var(--size);
+  translate: -50% -50%;
+  display: block;
+  text-decoration: none;
+  border-radius: 14px;
+  transform: rotate(var(--rot));
+  animation: pop var(--intro) cubic-bezier(0.34, 1.56, 0.64, 1) var(--intro-delay) both;
+  will-change: transform, opacity;
+}
+
+/* On desktop the objects can rise into the sky above the picture (negative y).
+   This sits after the .float rule above on purpose, so it wins. */
+@media (min-width: 861px) {
+  .float {
+    --top: var(--y);
+    --fy: var(--from-y);
+  }
+}
+
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--from-x), var(--fy), 0) scale(0.2) rotate(-30deg);
+  }
+  14% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1) rotate(var(--rot));
+  }
+}
+
+/* Idle: bob up and tilt back and forth, starting once it has landed. --bob-dur is 3 to 5 seconds. */
+.bob {
+  display: block;
+  animation: bob var(--bob-dur) ease-in-out var(--bob-delay) infinite;
+}
+
+@keyframes bob {
+  0%,
+  50%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(var(--drift), calc(var(--bob) * -1), 0) rotate(var(--tilt));
+  }
+  75% {
+    transform: translate3d(calc(var(--drift) * -1), calc(var(--bob) * -0.4), 0) rotate(calc(var(--tilt) * -1));
+  }
+}
+
+.lift {
+  position: relative;
+  display: block;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.floatImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+}
+
+/* The name pill, under the object */
+.label {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  translate: -50% 0;
+  white-space: nowrap;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-pill);
+  background: var(--cream);
+  color: var(--navy);
+  font-size: var(--text-small);
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+  pointer-events: none;
+}
+
+/* Keyboard focus: always, on any device */
+.float:focus-visible {
+  outline: 3px solid var(--navy);
+  outline-offset: 6px;
+  box-shadow: 0 0 0 3px var(--cream);
+}
+
+.float:focus-visible .lift {
+  transform: translateY(-8px) scale(1.1);
+}
+
+.float:focus-visible .bob {
+  animation-play-state: paused;
+}
+
+.float:focus-visible .label {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hover: only on devices that can hover. On touch, a tap just goes to the project. */
+@media (hover: hover) {
+  .float:hover .lift {
+    transform: translateY(-8px) scale(1.1);
+  }
+
+  .float:hover .bob {
+    animation-play-state: paused;
+  }
+
+  .float:hover .label {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Off screen: pause the idle loops ---------- */
+
+.hero[data-paused="true"] .bob,
+.hero[data-paused="true"] .glow,
+.hero[data-paused="true"] .sweep,
+.hero[data-paused="true"] .steam {
+  animation-play-state: paused;
+}
+
+/* ---------- Reduced motion: objects already at rest, nothing moves ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .float,
+  .bob,
+  .glow,
+  .sweep {
+    animation: none;
+    will-change: auto;
+  }
+
+  /* No intro dashes, steam or shimmer */
+  .dash,
+  .steam,
+  .screen {
+    display: none;
+  }
+
+  /* Hover and focus still show the label, with no lifting */
+  .float:focus-visible .lift,
+  .float:hover .lift {
+    transform: none;
+  }
+
+  .label {
+    transition: opacity 0.25s;
+    transform: none;
+  }
+}

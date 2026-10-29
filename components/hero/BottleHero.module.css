@@ -1,0 +1,455 @@
+/*
+  BottleHero.module.css
+  Same approach as DewHero and LegacyHero: .art is a size container and .stage
+  is sized like object-fit: cover, pinned right. The SVG layer fills the stage.
+  Only transform and opacity are animated.
+
+  data-paused="true" on .hero (set while it is off screen) pauses everything.
+*/
+
+.hero {
+  --deep: #0b2a70; /* a deep blue from the lower water */
+  position: relative;
+  overflow: hidden;
+  background: var(--deep);
+  color: #fff4e2;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Artwork ---------- */
+
+.art {
+  position: relative;
+  order: 2;
+  width: 100%;
+  aspect-ratio: 4 / 3; /* mobile crop, anchored right so the bottle stays in */
+  container-type: size;
+  overflow: hidden;
+}
+
+.stage {
+  --stage-h: max(100cqh, calc(100cqw * 1520 / 2688));
+  position: absolute;
+  right: 0;
+  width: max(100cqw, calc(100cqh * 2688 / 1520));
+  height: var(--stage-h);
+  /* When the window is wider than the picture the extra height is cropped: 40% from the top, 60% from the bottom */
+  top: calc((100cqh - var(--stage-h)) * 0.4);
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/*
+  Contrast: cream (#FFF4E2) on the light water bands is as low as 2.3:1, short
+  of the 4.5:1 body text needs. A soft navy wash behind the text lifts the
+  worst spots to about 5:1 and fades out well before the bottle.
+*/
+.scrim {
+  display: none;
+}
+
+/* ---------- Copy ---------- */
+
+.copy {
+  position: relative;
+  z-index: 2;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding-top: calc(var(--header-h) + var(--space-5));
+  padding-bottom: var(--space-5);
+  background: var(--deep); /* mobile: a solid deep blue band above the picture (cream on it is 13:1) */
+  max-width: none;
+}
+
+.copy h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  line-height: 1.05;
+}
+
+.subline {
+  font-size: var(--text-lead);
+  line-height: 1.4;
+  max-width: 28ch;
+}
+
+@media (min-width: 861px) {
+  .hero {
+    /* The picture's own shape, but never taller than the window */
+    height: clamp(560px, calc(100vw * 1520 / 2688), 100svh);
+    flex-direction: row;
+    align-items: flex-end; /* the text sits low, over the water, under the wave line */
+  }
+
+  .art {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+  }
+
+  /* Water only: starts at the wave line (about 40% down the picture) with a soft top edge */
+  .scrim {
+    display: block;
+    position: absolute;
+    inset: 38% 0 0 0;
+    background: linear-gradient(
+      90deg,
+      rgba(4, 24, 84, 0.5) 0%,
+      rgba(4, 24, 84, 0.5) 40%,
+      rgba(4, 24, 84, 0) 68%
+    );
+    mask-image: linear-gradient(to bottom, transparent, #000 12%);
+    pointer-events: none;
+  }
+
+  .copy {
+    padding-top: 0;
+    padding-bottom: clamp(2rem, 8svh, 5rem);
+    background: none;
+  }
+
+  .copy > * {
+    max-width: min(34rem, 44%);
+  }
+}
+
+/* ---------- Bubbles ---------- */
+
+/*
+  --from, --to   where the rise starts and ends, measured from the bubble's resting spot
+  --dur          seconds for the whole rise (bigger = slower)
+  --delay        negative, so the first screen already has bubbles part-way up
+  --o            how see-through it is
+*/
+.bubble {
+  opacity: var(--o);
+  animation: rise var(--dur) linear var(--delay) infinite;
+  will-change: transform, opacity;
+}
+
+/* Fades in at the bottom, holds, then fades out over the last 28% (just under the waves) */
+@keyframes rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, var(--from), 0);
+  }
+  10% {
+    opacity: var(--o);
+  }
+  72% {
+    opacity: var(--o);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, var(--to), 0);
+  }
+}
+
+/* A gentle wobble, shared by every bubble */
+.sway {
+  animation: sway var(--sway-dur, 7s) ease-in-out infinite alternate;
+}
+
+@keyframes sway {
+  from {
+    transform: translate3d(calc(-1 * var(--sway)), 0, 0);
+  }
+  to {
+    transform: translate3d(var(--sway), 0, 0);
+  }
+}
+
+/* ---------- Bubbles from the bottle ---------- */
+
+/* One burst per --cycle: rise and fade in the first 38%, then rest until the next one */
+.burst {
+  opacity: 0;
+  animation: burst var(--cycle) ease-out var(--delay) infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes burst {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  4% {
+    opacity: 0.85;
+  }
+  38%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, var(--rise), 0);
+  }
+}
+
+/* ---------- Fish ---------- */
+
+/*
+  --from, --to   start and end of the swim, past each edge, from the resting spot
+  --dur          seconds to cross the picture (20 to 40)
+  The opacity steps fade the fish out while it passes the bottle, so it
+  swims "behind" it instead of over it.
+*/
+.swimRight,
+.swimLeft {
+  opacity: var(--o);
+  will-change: transform, opacity;
+}
+
+.swimRight {
+  animation: swimRight var(--dur) linear var(--delay) infinite;
+}
+
+.swimLeft {
+  animation: swimLeft var(--dur) linear var(--delay) infinite;
+}
+
+@keyframes swimRight {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--from), 0, 0);
+  }
+  5% {
+    opacity: var(--o);
+  }
+  50% {
+    opacity: var(--o);
+  }
+  56%,
+  80% {
+    opacity: 0;
+  }
+  86% {
+    opacity: var(--o);
+  }
+  95% {
+    opacity: var(--o);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--to), 0, 0);
+  }
+}
+
+@keyframes swimLeft {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--from), 0, 0);
+  }
+  5%,
+  14% {
+    opacity: var(--o);
+  }
+  20%,
+  43% {
+    opacity: 0;
+  }
+  50%,
+  95% {
+    opacity: var(--o);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--to), 0, 0);
+  }
+}
+
+/* A slow up and down drift while it swims */
+.bob {
+  animation: bob var(--bob-dur) ease-in-out infinite alternate;
+}
+
+@keyframes bob {
+  from {
+    transform: translate3d(0, calc(-1 * var(--bob)), 0);
+  }
+  to {
+    transform: translate3d(0, var(--bob), 0);
+  }
+}
+
+/* ---------- Light rays ---------- */
+
+/* Each ray fades between nearly nothing and --peak (0.05 to 0.15) */
+.ray {
+  opacity: 0.04;
+  animation: shimmer var(--dur) ease-in-out var(--delay) infinite;
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.03;
+  }
+  50% {
+    opacity: var(--peak);
+  }
+}
+
+/* ---------- Splash ---------- */
+
+/*
+  Every --cycle (7s) three drops pop up and fall back. The splash is the first
+  13% of the cycle (about 0.9s); the rest is quiet. The sideways move (splashX)
+  and the up and down (splashY) together make the arc.
+*/
+.splashX {
+  opacity: 0;
+  animation: splashX var(--cycle) linear var(--delay) infinite;
+}
+
+@keyframes splashX {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  1% {
+    opacity: 1;
+  }
+  12% {
+    opacity: 1;
+    transform: translate3d(var(--dx), 0, 0);
+  }
+  13%,
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--dx), 0, 0);
+  }
+}
+
+.splashY {
+  animation: splashY var(--cycle) linear var(--delay) infinite;
+}
+
+@keyframes splashY {
+  0% {
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: ease-out;
+  }
+  6% {
+    transform: translate3d(0, var(--up), 0);
+    animation-timing-function: ease-in;
+  }
+  13%,
+  100% {
+    transform: translate3d(0, 12px, 0);
+  }
+}
+
+/* ---------- Clouds ---------- */
+
+/* Drift right by --travel, fading in and out at the ends. --dur is 40 to 60s. */
+.cloud {
+  opacity: 0;
+  animation: drift var(--dur) linear var(--delay) infinite;
+}
+
+@keyframes drift {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  12%,
+  88% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--travel), 0, 0);
+  }
+}
+
+/* ---------- Sun glow ---------- */
+
+.sun {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse var(--pulse) ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+/* ---------- Off screen: pause ---------- */
+
+.hero[data-paused="true"] .bubble,
+.hero[data-paused="true"] .burst,
+.hero[data-paused="true"] .sway,
+.hero[data-paused="true"] .swimRight,
+.hero[data-paused="true"] .swimLeft,
+.hero[data-paused="true"] .bob,
+.hero[data-paused="true"] .ray,
+.hero[data-paused="true"] .splashX,
+.hero[data-paused="true"] .splashY,
+.hero[data-paused="true"] .cloud,
+.hero[data-paused="true"] .sun {
+  animation-play-state: paused;
+}
+
+/* ---------- Reduced motion: a few bubbles and fish, frozen in place ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble,
+  .sway,
+  .swimRight,
+  .swimLeft,
+  .bob,
+  .ray,
+  .cloud,
+  .sun {
+    animation: none;
+    will-change: auto;
+  }
+
+  /* Only the bubbles and fish marked still stay (see bottleHeroConfig.ts) */
+  .bubble:not(.still),
+  .swimRight:not(.still),
+  .swimLeft:not(.still) {
+    display: none;
+  }
+
+  /* The bottle bubbles and the splash don't appear at all */
+  .burst,
+  .splash {
+    display: none;
+  }
+
+  .ray {
+    opacity: 0.07;
+  }
+
+  .cloud {
+    opacity: 0.95;
+  }
+
+  .sun {
+    opacity: 0.85;
+  }
+}

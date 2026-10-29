@@ -1,0 +1,81 @@
+/* Gallery.module.css
+   Reference proportions at 1440px: 6vw side margins, 4 columns, 40px gaps. */
+
+.gallery {
+  background: var(--cream);
+  padding: var(--space-6) 6vw var(--space-7);
+}
+
+/* Big centered statement above the gallery */
+.intro {
+  max-width: 30em;
+  margin: 0 auto var(--space-6);
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: clamp(1.5rem, 2.6vw, 2.3rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6) 40px;
+}
+
+/* Centered "view more" link with a round icon */
+.more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-7);
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+  letter-spacing: -0.02em;
+}
+
+.more a {
+  font-weight: 800;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Phones: one swipeable row, next card peeking in */
+@media (max-width: 767px) {
+  .gallery {
+    padding-inline: 0;
+  }
+
+  .intro {
+    padding-inline: var(--gutter);
+  }
+
+  .grid {
+    display: flex;
+    gap: var(--space-3);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    padding-inline: var(--gutter);
+    padding-bottom: var(--space-3);
+  }
+
+  .item {
+    flex: 0 0 46%;
+    scroll-snap-align: start;
+  }
+
+  .more {
+    padding-inline: var(--gutter);
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,56 @@
+/* AboutHero.module.css
+   The portrait is pulled down with a negative margin so it overlaps
+   both bands; the bottom band adds the same amount of top padding. */
+
+.wrap {
+  --overlap: clamp(80px, 12vw, 170px);
+}
+
+.top {
+  background: var(--plum);
+  color: var(--cream);
+  padding: calc(var(--header-h) + var(--space-6)) 6vw 0;
+  text-align: center;
+}
+
+.title {
+  font-size: clamp(2.8rem, 6vw, 5.6rem);
+}
+
+.subline {
+  max-width: 22em;
+  margin: var(--space-3) auto 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
+  line-height: 1.15;
+  color: var(--marigold);
+}
+
+/* Arch-topped portrait, like the homepage tiles */
+.portrait {
+  position: relative;
+  z-index: 1;
+  width: min(420px, 70vw);
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  margin: var(--space-6) auto calc(var(--overlap) * -1);
+  border-radius: 999px 999px 0 0;
+  border: 8px solid var(--cream);
+  border-bottom: 0;
+}
+
+.bottom {
+  background: var(--pool);
+  color: var(--plum);
+  padding: calc(var(--overlap) + var(--space-5)) 6vw var(--space-7);
+}
+
+.intro {
+  max-width: 40em;
+  margin: 0 auto;
+  text-align: center;
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  line-height: 1.5;
+}

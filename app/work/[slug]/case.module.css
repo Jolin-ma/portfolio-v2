@@ -1,0 +1,99 @@
+/* case.module.css: screenshot, stack pills, flow diagram and links on a case page */
+
+.shot img {
+  width: 100%;
+  border-radius: var(--radius-card);
+  border: 2px solid var(--plum);
+}
+
+.shot figcaption {
+  margin-top: var(--space-2);
+  font-size: var(--text-small);
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.stack li {
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--plum);
+  color: var(--cream);
+  font-weight: 700;
+  font-size: var(--text-small);
+}
+
+.note {
+  font-style: italic;
+}
+
+/* Boxes joined by arrows, left to right on wide screens */
+.diagram {
+  display: grid;
+  grid-auto-flow: column; /* one row, however many steps there are */
+  grid-auto-columns: 1fr;
+  gap: var(--space-5);
+  counter-reset: step;
+}
+
+.diagram li {
+  position: relative;
+  padding: var(--space-3);
+  border: 2px solid var(--plum);
+  border-radius: 20px;
+  background: var(--white);
+  font-weight: 700;
+  counter-increment: step;
+}
+
+.diagram li::before {
+  content: counter(step);
+  display: block;
+  font-size: var(--text-small);
+  opacity: 0.7;
+}
+
+/* The arrow between boxes */
+.diagram li:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  right: calc(var(--space-5) * -0.5 - 0.5em);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+}
+
+@media (max-width: 767px) {
+  .diagram {
+    grid-auto-flow: row;
+  }
+
+  .diagram li:not(:last-child)::after {
+    content: "↓";
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: calc(var(--space-5) * -0.5 - 0.7em);
+    transform: translateX(-50%);
+  }
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  font-size: var(--text-lead);
+}
+
+.links a {
+  font-weight: 700;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.linkNote {
+  font-size: var(--text-small);
+}

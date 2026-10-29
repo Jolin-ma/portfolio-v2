@@ -1,0 +1,129 @@
+"use client";
+
+/*
+  PageCurtain.tsx
+  The page transition. A tilted panel in the next page's color sweeps up,
+  the page name slides in, the route changes underneath, then it clears.
+
+  How it works:
+    1. A TransitionLink calls `go(href, title, color)` instead of navigating.
+    2. Phase "cover": the panel animates up over the screen.
+    3. When the cover animation ends, router.push() swaps the page.
+    4. usePathname() changes -> phase "reveal": the panel leaves the top.
+    5. Phase "idle": the panel snaps back below the screen, unseen.
+  With reduced motion turned on, go() just navigates straight away.
+*/
+
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { cssColor, type ColorToken } from "@/content/site";
+import type { IllustrationVariant } from "@/components/ui/Illustration";
+import Illustration from "@/components/ui/Illustration";
+import styles from "./PageCurtain.module.css";
+
+type Phase = "idle" | "cover" | "reveal";
+
+export type CurtainTarget = {
+  title: string;
+  color: ColorToken;
+  ink: ColorToken;
+  illustration: IllustrationVariant;
+};
+
+type CurtainApi = {
+  go: (href: string, target: CurtainTarget) => void;
+};
+
+const CurtainContext = createContext<CurtainApi | null>(null);
+
+export function useCurtain() {
+  return useContext(CurtainContext);
+}
+
+/** "/work/dewstick/" and "/work/dewstick" are the same page */
+export function normalizePath(path: string) {
+  return path.replace(/\/+$/, "") || "/";
+}
+
+/** Matches the transition time in PageCurtain.module.css */
+const SWEEP_MS = 700;
+
+export default function PageCurtain({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [phase, setPhase] = useState<Phase>("idle");
+  const [target, setTarget] = useState<CurtainTarget | null>(null);
+  // Path we're waiting for, so we know when the new page has arrived
+  const pendingPath = useRef<string | null>(null);
+
+  const go = useCallback(
+    (href: string, next: CurtainTarget) => {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduceMotion || phase !== "idle") {
+        router.push(href);
+        return;
+      }
+      setTarget(next);
+      setPhase("cover");
+      pendingPath.current = normalizePath(new URL(href, window.location.href).pathname);
+
+      window.setTimeout(() => {
+        router.push(href);
+        // Safety net: if the path never changes (same page, hash link), clear anyway
+        window.setTimeout(() => {
+          if (pendingPath.current) {
+            pendingPath.current = null;
+            setPhase("reveal");
+          }
+        }, 1500);
+      }, SWEEP_MS + 150);
+    },
+    [phase, router],
+  );
+
+  // New page has rendered: lift the curtain
+  useEffect(() => {
+    if (pendingPath.current && normalizePath(pathname) === pendingPath.current) {
+      pendingPath.current = null;
+      const t = window.setTimeout(() => setPhase("reveal"), 200);
+      return () => window.clearTimeout(t);
+    }
+  }, [pathname]);
+
+  // After the reveal sweep finishes, reset off screen
+  useEffect(() => {
+    if (phase !== "reveal") return;
+    const t = window.setTimeout(() => setPhase("idle"), SWEEP_MS);
+    return () => window.clearTimeout(t);
+  }, [phase]);
+
+  return (
+    <CurtainContext.Provider value={{ go }}>
+      {children}
+      <div className={styles.curtain} data-phase={phase} aria-hidden="true">
+        <div
+          className={styles.panel}
+          style={{
+            background: cssColor(target?.color ?? "tomato"),
+            color: cssColor(target?.ink ?? "plum"),
+          }}
+        >
+          <div className={styles.content}>
+            <div className={styles.titleMask}>
+              <p className={styles.title}>{target?.title}</p>
+            </div>
+            {target && (
+              <div className={styles.art}>
+                <Illustration
+                  variant={target.illustration}
+                  background="none"
+                  line={target.ink === "cream" ? "cream" : "plum"}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </CurtainContext.Provider>
+  );
+}

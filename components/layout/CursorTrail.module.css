@@ -1,0 +1,51 @@
+/* CursorTrail.module.css: the plane pointer and its dotted trail */
+
+/* Sits above everything (even the page curtain) and never blocks clicks */
+.cursor {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+/* Shown once the mouse is on the page, hidden when it leaves */
+:global(html[data-cursor="on"]) .cursor {
+  opacity: 1;
+}
+
+.plane,
+.dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform, translate;
+}
+
+/* Tip of the plane = the pointer: the image's top-left corner.
+   Scales from the tip too, so the pointer spot never moves. */
+.plane {
+  width: 32px;
+  height: 32px;
+  transform-origin: 0 0;
+  transition: scale 0.2s, opacity 0.2s;
+}
+
+/* Over links and buttons */
+.plane[data-state="link"] {
+  scale: 1.4;
+}
+
+.plane[data-state="hidden"] {
+  opacity: 0;
+}
+
+/* Centered on its point: shift back by half its size */
+.dot {
+  width: var(--size);
+  height: var(--size);
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+  border-radius: 50%;
+  background: var(--tomato);
+}

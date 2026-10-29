@@ -1,0 +1,51 @@
+/* Contact.module.css */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+  margin-top: var(--space-5);
+}
+
+/* Full-width pill, same width as the fields */
+.submit {
+  min-height: 56px;
+  margin-top: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--marigold);
+  color: var(--plum);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: 1.15rem;
+  transition: background-color 0.3s var(--ease-out);
+}
+
+.submit:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+@media (min-width: 1025px) and (hover: hover) {
+  .submit:hover:not(:disabled) {
+    background: var(--blush);
+  }
+}
+
+.status:empty {
+  display: none;
+}
+
+.status {
+  padding: var(--space-3) var(--space-4);
+  border-radius: 20px;
+  font-weight: 700;
+  background: var(--cream);
+  color: var(--plum);
+}
+
+.success {
+  background: var(--pistachio);
+}

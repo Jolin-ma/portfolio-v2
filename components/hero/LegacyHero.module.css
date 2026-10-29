@@ -1,0 +1,280 @@
+/*
+  LegacyHero.module.css
+  Same approach as DewHero.module.css: .art is a size container and .stage is
+  sized like object-fit: cover, pinned right. The SVG layer fills the stage.
+  Only transform, opacity and stroke-dashoffset are animated.
+
+  Nothing starts until LegacyHero.tsx sets data-play="true" on .hero (after
+  the artwork loads), and data-paused="true" pauses it while off screen.
+*/
+
+.hero {
+  --sky: #f85137; /* sampled from the artwork */
+  position: relative;
+  overflow: hidden;
+  background: var(--sky);
+  color: #fff4e2;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Artwork ---------- */
+
+.art {
+  position: relative;
+  order: 2;
+  width: 100%;
+  aspect-ratio: 4 / 3; /* mobile crop, anchored right so the houses and heart stay in */
+  container-type: size;
+  overflow: hidden;
+}
+
+.stage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: max(100cqw, calc(100cqh * 2688 / 1520));
+  height: max(100cqh, calc(100cqw * 1520 / 2688));
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/*
+  Contrast: cream (#FFF4E2) on the artwork's sky is only 3.1:1, short of the
+  4.5:1 body text needs. A soft dark-red wash behind the text lifts it to
+  about 5.4:1 and fades out before the picture's focal point.
+*/
+.scrim {
+  display: none;
+}
+
+/* ---------- Copy ---------- */
+
+.copy {
+  position: relative;
+  z-index: 2;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding-top: calc(var(--header-h) + var(--space-5));
+  padding-bottom: var(--space-5);
+  /* Mobile: a deep red block (5.4:1 with the cream text) easing into the sky */
+  background: linear-gradient(#ba322a 0 72%, var(--sky));
+  max-width: none;
+}
+
+.copy h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  line-height: 1.05;
+}
+
+.subline {
+  font-size: var(--text-lead);
+  line-height: 1.4;
+  max-width: 28ch;
+}
+
+@media (min-width: 861px) {
+  .hero {
+    height: clamp(520px, 82svh, 860px);
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .art {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+  }
+
+  .scrim {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(110, 12, 24, 0.45) 0%,
+      rgba(110, 12, 24, 0.45) 40%,
+      rgba(110, 12, 24, 0) 68%
+    );
+    pointer-events: none;
+  }
+
+  .copy {
+    padding-top: var(--header-h);
+    padding-bottom: 0;
+    background: none;
+  }
+
+  .copy > * {
+    max-width: min(34rem, 44%);
+  }
+}
+
+/* ---------- Dotted paths: draw in, then stay ---------- */
+
+/* Mask stroke runs from "nothing drawn" (offset 1) to "all drawn" (0), --draw seconds */
+.drawMask {
+  stroke-dashoffset: 1;
+}
+
+.hero[data-play="true"] .drawMask {
+  animation: draw var(--draw) ease-in-out 0s 1 forwards;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---------- Heart: one pop when the paths arrive, then a slow beat ---------- */
+
+.heartPop,
+.heartBeat {
+  transform-box: fill-box;
+  transform-origin: 50% 70%;
+}
+
+.hero[data-play="true"] .heartPop {
+  animation: pop var(--pop) ease-in-out var(--pop-delay) 1 both;
+}
+
+@keyframes pop {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.12);
+  }
+}
+
+/* Soft double beat, then rest, once every --beat seconds */
+.hero[data-play="true"] .heartBeat {
+  animation: beat var(--beat) ease-in-out var(--beat-delay) infinite;
+}
+
+@keyframes beat {
+  0%,
+  36%,
+  100% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(var(--beat-scale));
+  }
+  20% {
+    transform: scale(1);
+  }
+  28% {
+    transform: scale(calc(1 + (var(--beat-scale) - 1) * 0.7));
+  }
+}
+
+/* ---------- Clouds ---------- */
+
+/* Drift right by --travel, fading in and out at the ends. --dur is 40 to 60s. */
+.cloud {
+  opacity: 0;
+  animation: drift var(--dur) linear var(--delay) infinite;
+}
+
+@keyframes drift {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  12%,
+  88% {
+    opacity: 0.92;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--travel), 0, 0);
+  }
+}
+
+/* ---------- Sun glow ---------- */
+
+.sun {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse var(--pulse) ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+/* ---------- Off screen: pause the CSS animations (SVG ones are paused in the component) ---------- */
+
+.hero[data-paused="true"] .drawMask,
+.hero[data-paused="true"] .heartPop,
+.hero[data-paused="true"] .heartBeat,
+.hero[data-paused="true"] .cloud,
+.hero[data-paused="true"] .sun {
+  animation-play-state: paused;
+}
+
+/* ---------- Reduced motion: the finished state, nothing moving ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .drawMask {
+    stroke-dashoffset: 0;
+  }
+
+  .heartPop,
+  .heartBeat,
+  .sun {
+    animation: none;
+  }
+
+  .hero[data-play="true"] .drawMask,
+  .hero[data-play="true"] .heartPop,
+  .hero[data-play="true"] .heartBeat {
+    animation: none;
+  }
+
+  /* Clouds rest where they start, visible */
+  .cloud {
+    animation: none;
+    opacity: 0.92;
+  }
+
+  .sun {
+    opacity: 0.85;
+  }
+
+  /* The plane and its dotted curve don't appear at all */
+  .plane {
+    display: none;
+  }
+}

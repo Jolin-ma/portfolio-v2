@@ -1,0 +1,289 @@
+/*
+  BusySeasonHero.module.css
+  Same approach as the other heroes: .art is a size container and .stage is
+  sized like object-fit: cover, pinned right. The SVG layer fills the stage.
+  Only transform and opacity are animated.
+
+  The ring and bubble keyframes (busy-ring, busy-lead-bubble) are written
+  from the config by busySeasonKeyframes.ts and put in a <style> tag by
+  BusySeasonHero.tsx. data-paused="true" on .hero pauses everything.
+*/
+
+.hero {
+  --coral: #f8485d; /* sampled from the artwork's sky */
+  --navy: #1f3a7a;
+  position: relative;
+  overflow: hidden;
+  background: var(--coral);
+  color: #fff4e2;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Artwork ---------- */
+
+.art {
+  position: relative;
+  order: 2;
+  width: 100%;
+  aspect-ratio: 4 / 3; /* mobile crop, anchored right so the phone and chimney stay in */
+  container-type: size;
+  overflow: hidden;
+}
+
+.stage {
+  --stage-h: max(100cqh, calc(100cqw * 1152 / 2688));
+  position: absolute;
+  right: 0;
+  width: max(100cqw, calc(100cqh * 2688 / 1152));
+  height: var(--stage-h);
+  /* If the window is wider than the picture, the extra height is cropped: 30% from the top, 70% from the bottom */
+  top: calc((100cqh - var(--stage-h)) * 0.3);
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/*
+  Contrast: cream (#FFF4E2) on the coral sky is only about 3.3:1, and navy is
+  3.2:1, both short of the 4.5:1 body text needs. A soft wine wash behind the
+  text lifts cream to about 5:1 and fades out well before the phone.
+*/
+.scrim {
+  display: none;
+}
+
+/* ---------- Copy ---------- */
+
+.copy {
+  position: relative;
+  z-index: 2;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-top: calc(var(--header-h) + var(--space-4));
+  padding-bottom: var(--space-5);
+  background: var(--navy); /* mobile: a navy band above the picture (cream on it is 10:1) */
+  max-width: none;
+}
+
+.copy h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4.2vw, 3.6rem);
+  line-height: 1.05;
+}
+
+.subline {
+  font-size: var(--text-lead);
+  line-height: 1.35;
+  max-width: 32ch;
+}
+
+/* The button is the phone's yellow with navy text (6:1) */
+.copy .cta {
+  background: #f6b92b;
+  color: var(--navy);
+  border-color: var(--navy);
+}
+
+.copy .cta:hover:not(:disabled) {
+  background: #ffd25a;
+  color: var(--navy);
+}
+
+@media (min-width: 861px) {
+  .hero {
+    /* The picture's own shape, but never taller than the window */
+    height: clamp(480px, calc(100vw * 1152 / 2688), 100svh);
+    flex-direction: row;
+    align-items: flex-end; /* the text sits low, under the clouds */
+  }
+
+  .art {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+  }
+
+  .scrim {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(110, 12, 38, 0.4) 0%,
+      rgba(110, 12, 38, 0.4) 42%,
+      rgba(110, 12, 38, 0) 66%
+    );
+    pointer-events: none;
+  }
+
+  .copy {
+    padding-top: 0;
+    padding-bottom: clamp(1.5rem, 6svh, 3.5rem);
+    background: none;
+  }
+
+  .copy > * {
+    max-width: min(34rem, 56%);
+  }
+}
+
+/* ---------- Ringing marks ---------- */
+
+/*
+  "Ring ring": the marks pop out from the handset's middle, wiggle and fade,
+  twice, then rest. --cycle is the whole rhythm in seconds; --delay staggers
+  the marks. The keyframes come from the config.
+*/
+.ring {
+  opacity: 0;
+  animation: var(--ring-name) var(--cycle) ease-out var(--delay) infinite;
+  will-change: transform, opacity;
+}
+
+/* ---------- Lead bubbles ---------- */
+
+/*
+  Each bubble has the same long cycle (every x number of bubbles) and starts
+  --delay seconds in, so they take turns. The keyframes come from the config.
+*/
+.lead {
+  opacity: 0;
+  animation: var(--bubble-name) var(--cycle) ease-out var(--delay) infinite;
+  will-change: transform, opacity;
+}
+
+/* ---------- Smoke ---------- */
+
+/* Rises --rise, zig-zags a little, grows to 1.7x and fades. --dur is seconds per puff. */
+.puff {
+  opacity: 0;
+  animation: puff var(--dur) ease-in-out var(--delay) infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes puff {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.5);
+  }
+  15% {
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate3d(calc(var(--dx) * -0.5), calc(var(--rise) * 0.5), 0) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--dx), var(--rise), 0) scale(1.7);
+  }
+}
+
+/* ---------- Clouds ---------- */
+
+/* Drift right by --travel, fading in and out at the ends. --dur is 40 to 60s. */
+.cloud {
+  opacity: 0;
+  animation: drift var(--dur) linear var(--delay) infinite;
+}
+
+@keyframes drift {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  12%,
+  88% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--travel), 0, 0);
+  }
+}
+
+/* ---------- Sun glow ---------- */
+
+.sun {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse var(--pulse) ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+/* ---------- Off screen: pause ---------- */
+
+.hero[data-paused="true"] .ring,
+.hero[data-paused="true"] .lead,
+.hero[data-paused="true"] .puff,
+.hero[data-paused="true"] .cloud,
+.hero[data-paused="true"] .sun {
+  animation-play-state: paused;
+}
+
+/* ---------- Reduced motion: marks and one bubble frozen, nothing moving ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .ring,
+  .lead,
+  .puff,
+  .cloud,
+  .sun {
+    animation: none;
+    will-change: auto;
+  }
+
+  .ring {
+    opacity: 1;
+  }
+
+  /* Only the first bubble ("New lead!") stays; it rests just above the phone */
+  .lead {
+    display: none;
+  }
+
+  .lead.still {
+    display: block;
+    opacity: 1;
+  }
+
+  /* The smoke rests as a few puffs up the chimney */
+  .puff {
+    opacity: 0.8;
+    transform: translate(var(--rx), var(--ry)) scale(var(--rs));
+  }
+
+  .cloud {
+    opacity: 0.95;
+  }
+
+  .sun {
+    opacity: 0.85;
+  }
+}
