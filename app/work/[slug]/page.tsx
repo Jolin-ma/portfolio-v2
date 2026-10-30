@@ -21,6 +21,19 @@ import styles from "./case.module.css";
 
 type Params = { params: Promise<{ slug: string }> };
 
+// The four steps of "The challenge", in reading order
+const challengeSteps = [
+  ["broke", "What broke"],
+  ["tried", "What I tried"],
+  ["fixed", "What fixed it"],
+  ["learned", "What I learned"],
+] as const;
+
+/** Shows `backticked` parts of a sentence as code */
+function withCode(text: string) {
+  return text.split("`").map((part, i) => (i % 2 ? <code key={i}>{part}</code> : part));
+}
+
 // Only the slugs listed in projects.ts exist; anything else is a 404
 export const dynamicParams = false;
 
@@ -58,6 +71,20 @@ export default async function CaseStudyPage({ params }: Params) {
       <CaseSection id="idea" title="The idea">
         <p className="lead">{project.idea}</p>
       </CaseSection>
+
+      {project.store && (
+        <CaseSection id="store" title="From the store side">
+          <p>{project.store.intro}</p>
+          <dl className={styles.points}>
+            {project.store.points.map((point) => (
+              <div key={point.title}>
+                <dt>{point.title}</dt>
+                <dd>{point.text}</dd>
+              </div>
+            ))}
+          </dl>
+        </CaseSection>
+      )}
 
       <CaseSection id="designed" title="What I designed">
         <ul>
@@ -104,7 +131,21 @@ export default async function CaseStudyPage({ params }: Params) {
       </CaseSection>
 
       <CaseSection id="challenge" title="The challenge">
-        {project.challenge ? <p>{project.challenge}</p> : <ChallengePlaceholder />}
+        {project.challenge ? (
+          <>
+            <h3 className={styles.challengeTitle}>{project.challenge.title}</h3>
+            <dl className={styles.points}>
+              {challengeSteps.map(([key, label]) => (
+                <div key={key}>
+                  <dt>{label}</dt>
+                  <dd>{withCode(project.challenge![key])}</dd>
+                </div>
+              ))}
+            </dl>
+          </>
+        ) : (
+          <ChallengePlaceholder />
+        )}
       </CaseSection>
 
       <CaseSection id="links" title="Links">

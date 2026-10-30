@@ -1,7 +1,8 @@
 /*
   AboutHero.tsx
-  Dark band with a centered title and subline, and a portrait standing
-  across the seam into the next band, where the intro paragraph sits.
+  Title and subline centered on the art's paper cream, the wide
+  illustration (Jolin sitting on a laptop) under them, then the intro
+  paragraph on the same paper, in the subline's type.
 */
 
 import { aboutHero } from "@/content/about";
@@ -11,14 +12,16 @@ export default function AboutHero() {
   return (
     <header className={styles.wrap}>
       <div className={styles.top}>
-        <h1 className={styles.title}>{aboutHero.title}</h1>
-        <p className={styles.subline}>{aboutHero.subline}</p>
+        <div className={styles.text}>
+          <h1 className={styles.title}>{aboutHero.title}</h1>
+          <p className={styles.subline}>{aboutHero.subline}</p>
+        </div>
         <img
-          className={styles.portrait}
-          src="/images/me.webp"
-          width={822}
-          height={765}
-          alt="Jolin Ma smiling outdoors in front of a wooden fence and trees"
+          className={styles.art}
+          src="/images/about/about-hero.webp"
+          width={2560}
+          height={1448}
+          alt="Illustration of Jolin Ma in a yellow sweater, sitting cross-legged on an open laptop, with a sketchbook, a phone, a lip balm, a film strip and a speech bubble arching overhead"
           fetchPriority="high"
         />
       </div>

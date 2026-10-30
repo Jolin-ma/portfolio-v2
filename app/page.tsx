@@ -6,6 +6,7 @@
 
 import Hero from "@/components/sections/Hero";
 import Gallery from "@/components/sections/Gallery";
+import WhatIDo from "@/components/sections/WhatIDo";
 import Features from "@/components/sections/Features";
 import HowIWork from "@/components/sections/HowIWork";
 import Contact from "@/components/sections/Contact";
@@ -21,6 +22,7 @@ export default function HomePage() {
       <Hero />
       <Gallery />
       <FeatureBand id="open" layout="statement" bg="marigold" ink="plum" {...bands.openToWork} />
+      <WhatIDo />
       <Features />
       <HowIWork />
       <Contact />

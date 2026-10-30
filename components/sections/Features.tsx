@@ -55,11 +55,13 @@ export default function Features() {
   return (
     <>
       <FeatureBand layout="cover" {...bandProps(dewstick)} />
+      {/* Tiles are too small for the longer description next to the corner art */}
       <BandPair>
-        <FeatureBand layout="tile" {...bandProps(bottle)} />
-        <FeatureBand layout="tile" {...bandProps(busy)} />
+        <FeatureBand layout="tile" {...bandProps(bottle)} more={undefined} />
+        <FeatureBand layout="tile" {...bandProps(busy)} more={undefined} />
       </BandPair>
-      <FeatureBand layout="cover" {...bandProps(legacy)} />
+      {/* Legacy's art has no empty left side: a second paragraph runs over the house and path */}
+      <FeatureBand layout="cover" {...bandProps(legacy)} more={undefined} />
       <FeatureBand layout="cover" {...bandProps(portfolio)} />
     </>
   );

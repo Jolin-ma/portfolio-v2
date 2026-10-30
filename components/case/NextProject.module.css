@@ -12,8 +12,8 @@
   (about 25%), so a thin strip is cropped from the top and bottom on desktop, never
   gets shorter than 260px, and anchors the
   picture right on narrow screens so the bottle stays in view. The text sits at
-  the bottom left, over the deeper water. A navy wash lifts cream text on the
-  light water bands from about 2.3:1 to about 5:1.
+  the bottom left, over the deeper water. No wash over the picture (Jolin didn't
+  want it tinted): a soft dark shadow behind the cream text keeps it readable.
 */
 .withBanner {
   position: relative;
@@ -28,16 +28,10 @@
   object-position: right center;
 }
 
-.wash {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(4, 24, 84, 0.5) 0%, rgba(4, 24, 84, 0.5) 38%, rgba(4, 24, 84, 0) 66%);
-  mask-image: linear-gradient(to bottom, transparent 30%, #000 50%);
-}
-
 .withBanner .inner {
   position: relative;
   width: 100%;
+  text-shadow: 0 2px 18px rgba(42, 27, 61, 0.55), 0 1px 3px rgba(42, 27, 61, 0.45);
 }
 
 .inner {

@@ -97,3 +97,37 @@
 .linkNote {
   font-size: var(--text-small);
 }
+
+/* "The challenge": the problem's name above its four steps */
+.challengeTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-lead);
+  line-height: 1.15;
+}
+
+/* "From the store side" and "The challenge": a title and a paragraph per point */
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.points dt {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+  line-height: 1.1;
+}
+
+.points dd {
+  margin: var(--space-2) 0 0;
+  max-width: 38em;
+}
+
+.points code {
+  padding: 0.1em 0.35em;
+  border-radius: 6px;
+  background: var(--white);
+  font-size: 0.9em;
+}

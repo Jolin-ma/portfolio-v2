@@ -10,7 +10,9 @@
   gap: var(--space-5);
   padding: calc(var(--header-h) + var(--space-4)) var(--gutter) var(--space-6);
   overflow-y: auto;
-  transition: background-color 0.6s var(--ease-out), color 0.6s var(--ease-out);
+  transition:
+    background-color 0.6s var(--ease-out),
+    color 0.6s var(--ease-out);
   animation: drop 0.5s var(--ease-snap);
 }
 
@@ -63,7 +65,9 @@
 
 .pageLink {
   font-family: var(--font-display);
-  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-variation-settings:
+    "SOFT" 100,
+    "WONK" 1;
   font-weight: 800;
   font-size: clamp(2.4rem, 5vw, 4.4rem);
   letter-spacing: -0.02em;
@@ -73,15 +77,54 @@
   opacity: 0.45;
 }
 
+/* Full-screen menu art, sized by height so the subject stays in the middle
+   column on wide windows. The sides fade into the overlay's matching color.
+   z-index -1 keeps it under the links but above the overlay's own background
+   (the overlay is its own stacking context) */
+.backdrop {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  z-index: -1;
+  width: min(100%, 177.78vh);
+  max-width: none;
+  height: auto;
+  transform: translateX(-50%);
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  animation: fade 0.4s var(--ease-out);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
 .showcase {
   display: grid;
   place-items: center;
 }
 
 .art {
-  width: min(100%, 360px);
-  aspect-ratio: 4 / 5;
+  width: min(100%, 440px);
+  aspect-ratio: 1 / 1;
   animation: pop 0.5s var(--ease-out);
+}
+
+/* The curtain scenes are 16:9 with the subject low and centered */
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 85%;
+  border-radius: var(--radius-card);
 }
 
 @keyframes pop {
@@ -122,7 +165,8 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .showcase {
+  .showcase,
+  .backdrop {
     display: none;
   }
 }

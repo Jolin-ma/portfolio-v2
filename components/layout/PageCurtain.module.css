@@ -35,12 +35,59 @@
   transition: transform 0.7s var(--ease-snap);
 }
 
+/* Exactly one screen, centered in the panel (the panel's center is the
+   screen's center once it has swept up) */
+.stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100vw;
+  height: 100vh;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+}
+
+/*
+  Full-screen picture: the art is flat color on top and the subject in the
+  lower middle, so it's pinned to the bottom edge and never cropped there.
+  At least screen-wide, and wide enough to reach the top on 16:9 or
+  narrower screens. Anything wider just shows more panel color above.
+*/
+.photo {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: max(100%, 177.78vh);
+  max-width: none;
+  height: auto;
+  transform: translateX(-50%);
+}
+
+/* Tall screens: a full-height picture would crop the subject's sides, so
+   scale it to keep the middle in view and let the panel color fill above */
+@media (orientation: portrait) {
+  .photo {
+    width: 180vw;
+  }
+}
+
+/* With a picture, the title sits in the empty sky above the subject */
+.withArt {
+  place-items: start center;
+}
+
+.withArt .content {
+  position: relative;
+  padding-top: max(var(--header-h), 16vh);
+}
+
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-4);
-  width: 50%; /* the visible screen width, since the panel is 200% */
+  width: 100%;
   padding-inline: var(--gutter);
   text-align: center;
 }

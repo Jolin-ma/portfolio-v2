@@ -40,7 +40,7 @@ export default function DewHero({ project }: { project: Project }) {
       <div className={styles.art}>
         <div className={styles.stage}>
           <Image
-            src="/images/dewstick%20page.png"
+            src="/images/dewstick-page.webp"
             alt="A pink lip balm tube with its cap leaning beside it, in front of a big orange sun and soft pink hills"
             width={1344}
             height={752}

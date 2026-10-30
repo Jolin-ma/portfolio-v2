@@ -17,7 +17,7 @@ import { heroPairs, site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: {
-    default: `${site.name} · ${site.role}`,
+    default: `${site.name} · ${site.role} & digital marketer`,
     template: `%s · ${site.name}`,
   },
   description: `${site.tagline}. ${site.role} focused on ${site.focus}, based in ${site.location}.`,

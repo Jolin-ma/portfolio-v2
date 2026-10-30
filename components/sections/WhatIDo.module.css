@@ -1,0 +1,99 @@
+/* WhatIDo.module.css
+   Type sizes match FeatureBand, so the band reads like its neighbours. */
+
+.band {
+  background: var(--cream);
+  color: var(--plum);
+  padding: var(--space-7) 6vw;
+}
+
+.title {
+  font-size: clamp(2.4rem, 4.4vw, 4rem);
+  line-height: 1;
+}
+
+.lanes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: var(--space-6);
+  border-top: 2px solid var(--plum);
+}
+
+.lane {
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--space-5);
+}
+
+.lane:first-child {
+  padding-right: var(--space-6);
+  border-right: 2px solid var(--plum);
+}
+
+.lane:last-child {
+  padding-left: var(--space-6);
+}
+
+.laneTitle {
+  font-size: clamp(1.8rem, 3vw, 2.75rem);
+  line-height: 1.05;
+}
+
+.text {
+  max-width: 26em;
+  margin-top: var(--space-3);
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  line-height: 1.45;
+}
+
+/* Same pills as the stack list on case study pages */
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.items li {
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--plum);
+  color: var(--cream);
+  font-weight: 700;
+  font-size: var(--text-small);
+}
+
+.link {
+  margin-top: auto;
+  padding-top: var(--space-5);
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: clamp(1.6rem, 2.5vw, 2.25rem);
+  letter-spacing: -0.02em;
+}
+
+.link a {
+  font-weight: 800;
+}
+
+/* Phones: one lane under the other, divided by a line */
+@media (max-width: 767px) {
+  .band {
+    padding: var(--space-6) var(--gutter);
+  }
+
+  .lanes {
+    grid-template-columns: 1fr;
+    margin-top: var(--space-5);
+  }
+
+  .lane:first-child {
+    padding: var(--space-5) 0;
+    border-right: 0;
+    border-bottom: 2px solid var(--plum);
+  }
+
+  .lane:last-child {
+    padding-left: 0;
+  }
+}

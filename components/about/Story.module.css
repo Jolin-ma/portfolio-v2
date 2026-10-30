@@ -1,29 +1,38 @@
-/* Story.module.css */
+/* Story.module.css
+   Like the hero: full-width band on the illustrations' own paper color,
+   each picture centered with no frame, its words under it in the same
+   type as the hero's subline, so picture and words read as one. */
 
 .story {
-  background: var(--pool);
+  background: #faf3e5; /* the story art's paper, same as the About hero */
   color: var(--plum);
-  padding: 0 6vw var(--space-8);
+  padding: var(--space-7) 6vw var(--space-8);
 }
 
 .title {
   text-align: center;
   font-size: clamp(2.2rem, 4.4vw, 3.6rem);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-5);
 }
 
 .chapters {
   display: flex;
   flex-direction: column;
   gap: var(--space-7);
-  max-width: 880px;
-  margin: 0 auto;
 }
 
-/* Wide 2:1 frame, like a film still */
+/* The 4:3 picture as large as it can be: full width up to 1100px, and
+   never taller than 70% of the screen, so picture and text fit together */
 .media {
-  aspect-ratio: 2 / 1;
-  overflow: hidden;
+  width: min(100%, 1100px, calc(70vh * 4 / 3));
+  aspect-ratio: 4 / 3;
+  margin: 0 auto;
+  /* Feather the edges: each picture's paper is within a shade of the band,
+     so a soft fade hides any line where they meet */
+  mask-image:
+    linear-gradient(to right, transparent, #000 4%, #000 96%, transparent),
+    linear-gradient(to bottom, transparent, #000 4%, #000 96%, transparent);
+  mask-composite: intersect;
 }
 
 .media > * {
@@ -32,16 +41,26 @@
   object-fit: cover;
 }
 
+/* Same type as the About hero's subline. Tomato on this cream only passes
+   contrast as large text, so it stays at least 19px bold (24px on desktop) */
 .text {
-  max-width: 34em;
+  max-width: 26em;
   margin: var(--space-4) auto 0;
   text-align: center;
-  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
-  line-height: 1.5;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+  line-height: 1.3;
+  color: var(--tomato);
 }
 
 @media (max-width: 767px) {
-  .media {
-    aspect-ratio: 4 / 3;
+  .story {
+    padding: var(--space-6) var(--gutter) var(--space-7);
+  }
+
+  .chapters {
+    gap: var(--space-6);
   }
 }

@@ -30,16 +30,34 @@ export const aboutCurtain = {
   color: "pistachio",
   ink: "plum",
   illustration: "gardener",
+  art: { src: "/images/curtain/curtain-about.webp" },
 } satisfies CurtainTarget;
+
+/** What the page curtain shows on the way home (the default for any link) */
+export const homeCurtain = {
+  title: "Home",
+  color: "cream",
+  ink: "plum",
+  illustration: "gardener",
+  // the art's cream is a little warmer than --cream
+  art: { src: "/images/curtain/curtain-home.webp", bg: "#f2e8d1" },
+} satisfies CurtainTarget;
+
+/** Full-screen picture behind the menu before any project is hovered.
+    `bg` matches the picture's flat background so the overlay doesn't flash. */
+export const menuArt = {
+  src: "/images/curtain/curtain-home.webp",
+  bg: "#f2e8d1",
+};
 
 export const site = {
   name: "Jolin Ma",
   heroName: "JOLIN",
   role: "Web designer",
-  focus: "UI Design and Front-End Development",
+  focus: "UI Design, Front-End Development and Digital Marketing",
   location: "Oshawa, ON",
   status: "Open to web design opportunities",
-  tagline: "I design and build engaging digital experiences",
+  tagline: "I design and build websites and online stores",
   about:
     "I'm a web designer in Oshawa who designs and builds websites that look great, feel intuitive, and work on every screen.",
   aboutMore: [
@@ -60,7 +78,7 @@ export const site = {
 
 /** Hero headline (two lines) and the accent line under it */
 export const hero = {
-  title: "I design and build engaging digital experiences.",
+  title: "I design and build engaging websites and online stores.",
   subline: "Web designer in Oshawa, ON.",
 };
 
@@ -72,7 +90,7 @@ export const hero = {
 export const bands = {
   openToWork: {
     title: "Open to new work!",
-    text: "I'm open to web design opportunities. If you have a project or a role in mind, I'd love to hear about it.",
+    text: "I'm open to roles in web design, e-commerce and digital marketing. If you have a project or a role in mind, I'd love to hear about it.",
     link: { label: "Say hello.", href: "/#contact" },
   },
   howIWork: {
@@ -98,6 +116,33 @@ export const bands = {
     title: "Playground.",
     text: "Illustration and motion experiments, kept apart from the client work.",
   },
+};
+
+/*
+  "What I do" band on the homepage: two lanes side by side.
+  Build is the web side, Run the store is the shop side (from the
+  Royal Distributing counter and the Dewstick store).
+*/
+export const whatIDo = {
+  title: "What I do.",
+  lanes: [
+    {
+      title: "Build",
+      text: "I design the site in Figma, then build it myself, by hand or on a platform.",
+      items: ["Figma", "React / Next.js", "WordPress"],
+      link: { label: "See the work.", href: "/#work" },
+    },
+    {
+      title: "Run the store",
+      text: "Seven years behind a retail counter, the last two working in the Shopify admin every day.",
+      items: ["Shopify admin", "Product data", "Listings", "Order flow"],
+      link: {
+        label: "Behind the counter.",
+        href: "/about/#counter",
+        curtain: aboutCurtain,
+      },
+    },
+  ],
 };
 
 /** "Elsewhere" cards near the bottom of the homepage */
@@ -141,7 +186,11 @@ export const elsewhere: {
 ];
 
 /** Main page links, shown on the left of the menu overlay. */
-export const navLinks: { label: string; href: string; curtain?: CurtainTarget }[] = [
+export const navLinks: {
+  label: string;
+  href: string;
+  curtain?: CurtainTarget;
+}[] = [
   { label: "Home", href: "/" },
   { label: "Work", href: "/#work" },
   { label: "About", href: "/about/", curtain: aboutCurtain },
@@ -161,9 +210,7 @@ export const heroPairs: {
   accent: ColorToken;
   ink: ColorToken;
   subject: ColorToken;
-}[] = [
-  { bg: "indigo", accent: "teal", ink: "cream", subject: "cream" },
-];
+}[] = [{ bg: "indigo", accent: "teal", ink: "cream", subject: "cream" }];
 
 /** Steps in the "How I work" band. */
 export const process = [

@@ -1,8 +1,8 @@
 /*
   Story.tsx
-  "My story so far": short chapters, each a wide image (photo or
-  placeholder illustration) followed by one paragraph, all centered
-  in a narrow column on the same color as the hero's bottom band.
+  "My story so far": short chapters, each a large centered illustration
+  followed by one paragraph, on a full-width band in the art's own
+  paper color, with the words set like the hero's subline.
 */
 
 import Illustration, { type IllustrationVariant } from "@/components/ui/Illustration";

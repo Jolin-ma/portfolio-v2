@@ -12,7 +12,7 @@ import { caseHref, curtainFor, type Project } from "@/content/projects";
 import styles from "./NextProject.module.css";
 
 export default function NextProject({ project }: { project: Project }) {
-  // With a banner picture the band fills with it and keeps the text (in cream, on a soft wash)
+  // With a banner picture the band fills with it and keeps the text (in cream, with a soft shadow)
   const banner = project.bannerArt;
 
   return (
@@ -23,10 +23,7 @@ export default function NextProject({ project }: { project: Project }) {
       style={{ background: cssColor(project.color), color: banner ? "#fff4e2" : cssColor(project.ink) }}
     >
       {banner && (
-        <>
-          <Image src={banner} alt="" fill sizes="100vw" className={styles.banner} />
-          <span className={styles.wash} aria-hidden="true" />
-        </>
+        <Image src={banner} alt="" fill sizes="100vw" className={styles.banner} />
       )}
       <div className={`container ${styles.inner}`}>
         <div>

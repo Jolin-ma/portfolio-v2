@@ -42,16 +42,81 @@ Jolin supplied the final artwork and videos; all homepage slots now use them.
 - `npm run build` passes (homepage, about, 5 case studies, 404), type check clean
 - Dev server running at http://localhost:3000 (started this session with `npm run dev`)
 - Checked in a browser at 1440px only. **Phone widths not checked** for any of today's changes (the test browser wouldn't shrink)
-- Not a git repo, nothing pushed or deployed
+- (Oct 29: now a git repo, pushed to GitHub, still not deployed)
+
+## Oct 29, 2026 (session 3): banners, copy, hover, cleanup, GitHub
+
+### Done
+- **"Next project" banners** (`components/case/NextProject.tsx`): all five projects now have `bannerArt` in `content/projects.ts`. The band under a page shows the *next* project's banner (so the Busy Season banner sits under Message in a bottle, and so on). `msg-banner.webp` was Jolin's; the other four (`busy-season-`, `dewstick-`, `legacy-link-studio-`, `portfolio-banner.webp`, all 3168 x 1344) were built from existing art with sharp, not newly drawn: Busy Season resized from its hero base, Dewstick and Portfolio extended on the flat red left side, Legacy scaled up and trimmed from the top sky (mirroring doubled the houses, so it was dropped)
+- **Banner height:** `aspect-ratio` in `NextProject.module.css` changed from 3168 / 1344 to 3168 / 1000 (about 25% shorter, a thin strip cropped top and bottom). Lower the 1000 for shorter, 1344 is the old height
+- **Message in a bottle hero copy** (`BottleHero.tsx` defaults) rewritten to match the idea: "Let your thoughts fall away" / "A quiet diary where every word breaks into letters and settles into a pile that grows with you." / button "Start writing". The old copy described a send-to-the-future app
+- **Gallery card hover:** the roll-up reveal only worked once per card, because a returning image was already fully revealed and a CSS transition had nothing to animate. Now a keyframe animation (`rollUp`) replays on every hover, switched on by `data-rolling` after the first hover so nothing animates on load, and off for reduced motion
+- **Longer homepage descriptions:** new required `details` field on `Project`, shown as a second paragraph under the summary in each project band (`more` prop on `FeatureBand`). In the two tiles it is held to the left 46% so it stays clear of the art. Written from existing content only, so reword in `content/projects.ts`
+- **Cleanup:** 35 unused images and videos (about 57 MB, the original PNGs and MP4s) moved out of `public/` to `C:\Users\jolin\Documents\portfolio-v2-unused-images\` (outside the project, nothing deleted). `public/` is now 4.8 MB. Delete that folder when sure. The four `bands/footer-N.webp` are used by `Marquee.tsx` through a template string
+- **GitHub:** project is now a git repo, one commit pushed to https://github.com/Jolin-ma/portfolio-v2 (public, branch `main`). `.idea/` added to `.gitignore`. Nothing is deployed
+
+### Not checked
+- Type check passes, but none of today's changes were looked at in a browser: banner crop and text contrast (Legacy's pink hills behind the title are the lightest), the longer band text at tablet widths (about 770 to 1100px, tiles most at risk), the card roll-up by eye
+- Legacy banner is scaled about 2.4x, so check it for softness on a large screen
+
+## Oct 30, 2026 (session 4): browser check of session 3
+
+### Done
+- Rebuilt after the cleanup: `out/` is now 7.0 MB (was 35 MB)
+- **Checked in a browser:** the Busy Season and Legacy "next project" banners read well and Legacy isn't visibly soft at 1440. Phone and tablet widths were checked by loading the page in a fixed-width iframe (the browser window still won't shrink)
+- **Longer descriptions didn't fit in the two tiles:** at 1440 both paragraphs ran over the corner art, and below about 1024 the text was cut off at the tile's bottom. Jolin chose to show **only the summary in the tiles** (`more={undefined}` in `Features.tsx`), so the `details` field is no longer shown for Message in a bottle and Busy Season
+- **Same for the Legacy cover band:** its art has no empty left side, so the second paragraph ran over the house and dotted path. Now summary only. Dewstick and This portfolio keep both paragraphs (checked at 1024 and 1440)
+- Tile corner art slightly smaller so the summary clears it: 52% to 46% of the tile on desktop, 46% to 40% at 1024 and under. Measured: no overlap or clipping from 1100 to 1920px
+
+### Still slightly off
+- Around 800 and 1024px the last line of the Message in a bottle summary touches the top corner of the bottle art (10 to 16px)
+- At 1024px Legacy's "Press play." link sits right beside the little house on the left. Fine at 1440
+- Card roll-up hover still not looked at by eye
+
+### Making the e-commerce side visible (same session)
+Jolin felt v2 read as pure web dev. Four changes, look unchanged:
+- **Hero line:** "I design and build engaging websites and online stores." (Jolin's final wording, after trying a longer sentence that was too heavy). `site.tagline` (meta description) is "I design and build websites and online stores"
+- **"What I do" band** (`components/sections/WhatIDo.tsx`, words in `whatIDo` in `content/site.ts`), cream, right after "Open to new work!": two lanes, **Build** (Figma, React / Next.js, WordPress) and **Run the store** (Shopify admin, product data, listings, order flow). Run the store links to `/about/#counter`
+- **Dewstick, "From the store side":** new optional `store` field on `Project`, rendered as a case chapter after "The idea". Five points: products and variants, why the shades are laid out that way, cart and checkout, bilingual product pages, honest where proof is missing. All facts from the Dewstick repo (`PRODUCT.md`, README, `shopify-theme/sections/main-product.liquid`, locales). Dewstick's homepage `details` rewritten to lead with the store side
+- **"Behind the counter"** on the About page (`components/about/BehindTheCounter.tsx`, words in `counter` in `content/about.ts`), plum band after the story: online orders, BOPIS, what the counter taught me. Facts only from the Shopify developer resume and cover letter (7 years, Whitby, last two years in the Shopify admin, BOPIS, customer records and merging duplicates, the move to Shopify). **No numbers on purpose** (the master resume's order and SKU figures were left out). The third point is a `TODO(Jolin)`: my wording of her view, needs her voice and a real example
+- Checked at 1440 and 390 (What I do), Dewstick and About at 1440. Build passes
+
+### Dewstick hero image fix (same session)
+- The Oct 29 cleanup moved `dewstick page.png` out of `public/`, but `DewHero.tsx` used it (written as `dewstick%20page.png`, so the unused-file check missed it). The case study hero showed a broken image. Now a webp copy, `public/images/dewstick-page.webp` (40 KB), like the other two hero bases. The original stays in the unused folder
+- Checked all 48 image paths in `app/`, `components/` and `content/`: every one exists now
+
+### "Next project" banners: blue wash removed (same session)
+- Jolin didn't want the navy gradient (`.wash`) tinting the bottom left of the banners. Removed from `NextProject.tsx` and `.module.css`; the cream title now has a soft plum text shadow instead. Checked all five banners at 1440: true colors, titles readable. Faintest spot is the small "NEXT PROJECT" label on Legacy's pink hills
+
+### Page curtain: Jolin's full-screen art (same session)
+- Jolin drew six full-screen 16:9 curtain pictures (flat background in the project color, subject in the lower middle). Converted to webp in `public/images/curtain/` (2560 x 1440, 24 to 49 KB each). PNG originals moved to `C:\Users\jolin\Documents\portfolio-v2-unused-images\curtain-originals\`
+- `CurtainTarget` has an optional `art` (`{ src, bg? }`); projects set `curtainArt` in `content/projects.ts`, About sets it on `aboutCurtain`. Message in a bottle uses `bg: "#62a1d9"` because its art is a little deeper than `--pool`; the others match their tokens exactly
+- The picture is pinned to the bottom of the screen and the title sits in the empty sky above it. Portrait screens scale the picture to 180vw wide so the subject isn't cropped (panel color fills above). All six are preloaded after the first page load
+- Checked at 1440 x 800, 2133 x 1012 and 390 x 844. On phones the Dewstick balm comes out small, because it's small in its frame
+- **Home curtain** added too: `homeCurtain` (moved from `TransitionLink.tsx` to `content/site.ts`) now uses `curtain-home.webp` (open book of the projects) on cream, `bg: "#f2e8d1"`. It's the default for any link without its own curtain
+- The old drawings are still used in the **menu overlay** only
+
+### About page: illustrated portrait (same session)
+- **Later replaced by Jolin's About hero art** (`about/about-hero.webp`, 2560 x 1448: Jolin on a laptop, project icons arching overhead, on paper cream). `AboutHero` rebuilt: title and subline centered on the art's paper color `#faf3e5` (subline in tomato for contrast), the picture under them at most 70vh tall and shrunk to fit (never cropped) on wide screens, 6:5 side crop on phones. The arch portrait and its overlap are gone; the intro stays on the blue band below. Checked at 1440, 900 and 390
+- The About hero now uses the illustrated portrait `bands/me-illustration.webp` (720 x 900, same 4:5 as the frame) instead of the photo `me.webp`. `me.webp` is no longer used anywhere but still sits in `public/images/`
+- Digital marketing added to the About hero: subline "A web designer, front-end developer and digital marketer in Oshawa, ON." and one sentence in the intro (short-form video ads for agencies, signup funnels that track where visitors came from; from Busy Season and Dewstick). The About page's meta description (`app/about/page.tsx`) now includes digital marketing too
+- Homepage meta description too: `site.focus` is now "UI Design, Front-End Development and Digital Marketing" (only used in `app/layout.tsx`)
+- **Story chapter 1** now uses Jolin's illustrated office, `public/images/about/home-office.webp` (1760 x 1169; replaced once with Jolin's second version, the autumn one; PNG originals, both versions, in `portfolio-v2-unused-images\about-originals\`). The old photo `public/images/home-office.webp` is now unused, like `me.webp`
+- **Story chapters 2 and 3 reworded** for the e-commerce and marketing side ("Then I build it, and help it sell…", "Now I'm open to roles in web design, e-commerce and digital marketing…"). Both now use Jolin's art too: `about/story-projects.webp` and `about/story-open-to-work.webp` (PNGs in `about-originals`). Chapter 3 later swapped for the red puzzle-piece browser window (the open shop moved to the "Open to new work!" band). All three story pictures are 3:2, so the story frame (`Story.module.css`) changed from 2:1 (4:3 on phones) to 3:2 everywhere and nothing is trimmed
+- **"Open to new work!" text** (`bands.openToWork`, used on the homepage and About page): "I'm open to roles in web design, e-commerce and digital marketing. If you have a project or a role in mind, I'd love to hear about it." The footer marquee still says "Open to web design opportunities" (`site.marquee`); `site.status` says the same but isn't used anywhere
+- **About story, final art:** Jolin's hand-drawn set (same style as the About hero, Jolin in each): `about/story-1-desk.webp`, `story-2-projects.webp`, `story-3-doorway.webp` (1760 x 1314, 4:3). New file names on purpose: reusing the old names made browsers show cached old pictures. Story section restyled like the hero: full-width band on the art's paper `#faf3e5` (was pool blue), each 4:3 picture centered with no frame, up to 1100px wide and at most 70vh tall (840 x 630 at 1440 x 900), edges feathered 4% with a CSS mask so no seam shows. Story paragraphs set like the hero subline (Fraunces 800, tomato, 19 to 25px); tomato on that cream is 3.54:1, which passes only as large text, so keep it at least 19px bold. (A blue strip behind each paragraph was tried and undone.) The hero's intro band went the same way: blue to the paper cream, subline type, and shortened to "I design in Figma and build it myself, so nothing gets lost on the way to the browser. Then I help it sell, with short-form video ads and signup funnels." (the "small stuff" sentence about buttons, keyboard menus and fast first screens was dropped) Earlier versions and all PNGs are in `portfolio-v2-unused-images\about-originals\`
+- **"Open to new work!" band removed from the About page** (the homepage one stays). The `fitBand` option and hex `bg` added to `FeatureBand` for it were removed again; `FeatureBand.tsx` matches the commit
+- Homepage tab title: "Jolin Ma · Web designer & digital marketer" (`app/layout.tsx`). Other pages keep "<page> · Jolin Ma"
 
 ## Start here tomorrow: the other pages
 
-1. **About page** (`/about/`): the hero still uses the real photo `me.webp` (the illustrated portrait is only on the homepage tile). Story chapters still use placeholder illustrations and `home-office.webp`. Bands at the bottom still have placeholders
+1. **About page** (`/about/`): hero portrait and all three story pictures done Oct 30. FAQ section removed Oct 30 (component, styles and questions deleted; in the first commit if wanted back). Skills and Playground tiles now reuse the homepage art (pegboard on sapphire, playground video on plum). "Open to new work!" on the About page now uses Jolin's open shop art (`about/open-to-work.webp`, 1200 x 1500), on the art's own background `#f2ad30` (`FeatureBand` `bg` now also takes a hex color), and the new `fitBand` option makes the band exactly as tall as the picture (612px at 1440). No placeholder drawings left on the About page
 2. **Case study pages** (`/work/[slug]/`): the header band still shows the placeholder illustration. The new band and card art could go here
-3. **Menu overlay and page curtain:** still the placeholder gardener and project drawings
+3. **Menu overlay:** still the placeholder gardener and project drawings (every page curtain, Home included, now uses Jolin's art, Oct 30)
 4. **404 page:** placeholder bottle
 5. **Update `PORTFOLIO_HANDOFF.md`:** it's behind on most of the above (hero colors, logo, cursor, new layouts, tokens). Only the GalleryCard note was kept current
-6. **Clean up `public/images/`:** Jolin's original PNGs and MP4s (~30 MB, names with spaces) are no longer used but get copied into the build, which makes `out/` 35 MB. Move them out of `public/` (ask first)
+6. ~~Clean up `public/images/`~~ done Oct 29, `out/` confirmed 7 MB on Oct 30
+7. ~~Look at session 3's changes in a browser~~ done Oct 30 (see session 4). Not committed yet
 
 ### Still open
 - Hero animation (Jolin to decide)
@@ -62,4 +127,4 @@ Jolin supplied the final artwork and videos; all homepage slots now use them.
 - Not yet tested: curtain sweep by eye, reduced motion in a real browser, full keyboard pass, Lighthouse
 - Two Elsewhere cards (Dewstick in Figma, Dewstick source code) show a faint seam where the art's textured top meets the flat card color
 - `PillButton` is unused; `AGENTS.md` is managed by Next.js (keep it)
-- Repo and deploy, only with Jolin's OK
+- Deploy (the repo exists on GitHub, nothing is hosted yet). Decide whether the repo should stay public while `TODO(Jolin)` drafts and the handoff and progress notes are in it

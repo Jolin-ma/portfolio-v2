@@ -16,7 +16,8 @@
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { cssColor, type ColorToken } from "@/content/site";
+import { cssColor, aboutCurtain, homeCurtain, type ColorToken } from "@/content/site";
+import { projects } from "@/content/projects";
 import type { IllustrationVariant } from "@/components/ui/Illustration";
 import Illustration from "@/components/ui/Illustration";
 import styles from "./PageCurtain.module.css";
@@ -27,8 +28,21 @@ export type CurtainTarget = {
   title: string;
   color: ColorToken;
   ink: ColorToken;
+  /** Small drawing under the title, used when there's no `art` */
   illustration: IllustrationVariant;
+  /** Full-screen 16:9 picture (public/images/curtain/). `bg` is its flat
+      background color when that differs from `color`, so the panel and
+      the picture meet without a seam. */
+  art?: { src: string; bg?: string };
 };
+
+/** Every curtain picture, warmed up after load so none arrives late */
+export function preloadCurtainArt(srcs: string[]) {
+  const load = () => srcs.forEach((src) => (new Image().src = src));
+  // Safari has no requestIdleCallback
+  if (typeof window.requestIdleCallback === "function") window.requestIdleCallback(load);
+  else setTimeout(load, 1500);
+}
 
 type CurtainApi = {
   go: (href: string, target: CurtainTarget) => void;
@@ -55,6 +69,11 @@ export default function PageCurtain({ children }: { children: React.ReactNode })
   const [target, setTarget] = useState<CurtainTarget | null>(null);
   // Path we're waiting for, so we know when the new page has arrived
   const pendingPath = useRef<string | null>(null);
+
+  useEffect(() => {
+    const srcs = [homeCurtain.art.src, aboutCurtain.art.src, ...projects.flatMap((p) => (p.curtainArt ? [p.curtainArt.src] : []))];
+    preloadCurtainArt(srcs);
+  }, []);
 
   const go = useCallback(
     (href: string, next: CurtainTarget) => {
@@ -104,23 +123,27 @@ export default function PageCurtain({ children }: { children: React.ReactNode })
         <div
           className={styles.panel}
           style={{
-            background: cssColor(target?.color ?? "tomato"),
+            background: target?.art?.bg ?? cssColor(target?.color ?? "tomato"),
             color: cssColor(target?.ink ?? "plum"),
           }}
         >
-          <div className={styles.content}>
-            <div className={styles.titleMask}>
-              <p className={styles.title}>{target?.title}</p>
-            </div>
-            {target && (
-              <div className={styles.art}>
-                <Illustration
-                  variant={target.illustration}
-                  background="none"
-                  line={target.ink === "cream" ? "cream" : "plum"}
-                />
+          {/* One screen's worth of space in the middle of the oversized panel */}
+          <div className={`${styles.stage} ${target?.art ? styles.withArt : ""}`}>
+            {target?.art && <img src={target.art.src} alt="" className={styles.photo} decoding="async" />}
+            <div className={styles.content}>
+              <div className={styles.titleMask}>
+                <p className={styles.title}>{target?.title}</p>
               </div>
-            )}
+              {target && !target.art && (
+                <div className={styles.art}>
+                  <Illustration
+                    variant={target.illustration}
+                    background="none"
+                    line={target.ink === "cream" ? "cream" : "plum"}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

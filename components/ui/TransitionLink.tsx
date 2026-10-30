@@ -11,18 +11,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentProps, MouseEvent } from "react";
 import { normalizePath, useCurtain, type CurtainTarget } from "@/components/layout/PageCurtain";
+import { homeCurtain } from "@/content/site";
 
 type Props = ComponentProps<typeof Link> & {
   href: string;
   /** What the curtain shows. Defaults to the homepage look. */
   curtain?: CurtainTarget;
-};
-
-const homeCurtain: CurtainTarget = {
-  title: "Home",
-  color: "tomato",
-  ink: "plum",
-  illustration: "gardener",
 };
 
 export default function TransitionLink({ href, curtain = homeCurtain, onClick, ...rest }: Props) {

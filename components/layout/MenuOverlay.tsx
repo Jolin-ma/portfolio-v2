@@ -16,8 +16,13 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import RollLink from "@/components/ui/RollLink";
 import Illustration from "@/components/ui/Illustration";
-import { navLinks, cssColor } from "@/content/site";
-import { projects, caseHref, curtainFor, type Project } from "@/content/projects";
+import { navLinks, cssColor, homeCurtain, menuArt } from "@/content/site";
+import {
+  projects,
+  caseHref,
+  curtainFor,
+  type Project,
+} from "@/content/projects";
 import { normalizePath } from "./PageCurtain";
 import styles from "./MenuOverlay.module.css";
 
@@ -34,6 +39,13 @@ export default function MenuOverlay({ onClose }: { onClose: () => void }) {
       : pathname === "/"
         ? "/"
         : "";
+
+  // Warm the cache so the first hover doesn't flash the flat color
+  useEffect(() => {
+    projects.forEach((p) => {
+      if (p.menuArt) new Image().src = p.menuArt;
+    });
+  }, []);
 
   useEffect(() => {
     const dialog = ref.current;
@@ -53,7 +65,9 @@ export default function MenuOverlay({ onClose }: { onClose: () => void }) {
       }
       if (e.key !== "Tab" || !dialog) return;
       // Focus trap: wrap from last to first and back
-      const focusable = Array.from(dialog.querySelectorAll<HTMLElement>("a[href], button"));
+      const focusable = Array.from(
+        dialog.querySelectorAll<HTMLElement>("a[href], button"),
+      );
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
       if (e.shiftKey && document.activeElement === first) {
@@ -72,8 +86,13 @@ export default function MenuOverlay({ onClose }: { onClose: () => void }) {
     };
   }, [onClose]);
 
-  const bg = active ? cssColor(active.color) : "var(--white)";
+  const bg = active
+    ? (active.curtainArt?.bg ?? cssColor(active.color))
+    : menuArt.bg;
   const ink = active ? cssColor(active.ink) : "var(--plum)";
+  // Full-screen art: the hovered project's, or the default scene. The center card is only a fallback
+  const backdrop = active ? active.menuArt : menuArt.src;
+  const art = active ? active.curtainArt : homeCurtain.art;
 
   return (
     <div
@@ -101,7 +120,9 @@ export default function MenuOverlay({ onClose }: { onClose: () => void }) {
                   curtain={link.curtain}
                   className={`${styles.pageLink} ${isCurrent ? styles.current : ""}`}
                   aria-current={isCurrent ? "page" : undefined}
-                  icon={isCurrent ? <span aria-hidden="true">→</span> : undefined}
+                  icon={
+                    isCurrent ? <span aria-hidden="true">→</span> : undefined
+                  }
                   onClick={onClose}
                 >
                   {link.label}
@@ -112,16 +133,38 @@ export default function MenuOverlay({ onClose }: { onClose: () => void }) {
         </ul>
       </nav>
 
+      {backdrop && (
+        // key forces a re-mount so the fade replays on each swap
+        <img
+          key={backdrop}
+          src={backdrop}
+          alt=""
+          className={styles.backdrop}
+          decoding="async"
+        />
+      )}
+
       <div className={styles.showcase} aria-hidden="true">
         {/* key forces a re-mount so the pop-in animation replays on each swap */}
-        <div key={active?.slug ?? "home"} className={styles.art}>
-          <Illustration
-            variant={active?.illustration ?? "gardener"}
-            background="none"
-            line={active?.ink === "cream" ? "cream" : "plum"}
-            animated
-          />
-        </div>
+        {!backdrop && (
+          <div key={active?.slug ?? "home"} className={styles.art}>
+            {art ? (
+              <img
+                src={art.src}
+                alt=""
+                className={styles.photo}
+                decoding="async"
+              />
+            ) : (
+              <Illustration
+                variant={active?.illustration ?? "gardener"}
+                background="none"
+                line={active?.ink === "cream" ? "cream" : "plum"}
+                animated
+              />
+            )}
+          </div>
+        )}
       </div>
 
       <nav className={styles.projects} aria-label="Projects">
@@ -129,7 +172,11 @@ export default function MenuOverlay({ onClose }: { onClose: () => void }) {
         <ul role="list">
           {projects.map((p) => (
             // Hover or keyboard focus both preview the project (focus bubbles in React)
-            <li key={p.slug} onMouseEnter={() => setActive(p)} onFocus={() => setActive(p)}>
+            <li
+              key={p.slug}
+              onMouseEnter={() => setActive(p)}
+              onFocus={() => setActive(p)}
+            >
               <RollLink
                 href={caseHref(p)}
                 curtain={curtainFor(p)}
