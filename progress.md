@@ -108,6 +108,18 @@ Jolin felt v2 read as pure web dev. Four changes, look unchanged:
 - **"Open to new work!" band removed from the About page** (the homepage one stays). The `fitBand` option and hex `bg` added to `FeatureBand` for it were removed again; `FeatureBand.tsx` matches the commit
 - Homepage tab title: "Jolin Ma · Web designer & digital marketer" (`app/layout.tsx`). Other pages keep "<page> · Jolin Ma"
 
+## Oct 30, 2026 (session 5): challenges, commit, live on Vercel
+
+### Done
+- **"The challenge" written for all five projects.** `challenge` in `content/projects.ts` is now an object: `title`, `broke`, `tried`, `fixed`, `learned`. The case page shows the title, then the four steps as a list styled like "From the store side". Backticks in the text show as code (`withCode()` in `app/work/[slug]/page.tsx`)
+  - Message in a bottle, Busy Season, Legacy Link Studio: Jolin's own text, headings in sentence case. Busy Season's "What fixed it" reworded so the ads are for agencies' home service clients, not home service businesses directly
+  - Dewstick: "Telling shades apart in the cart", redrafted from the real code (`Dewstick/shop/site.js`, `dewstick-next/src/lib/cart-actions.ts`): each shade is a variant with its own ID, and `addToCart()` matches lines on it. "What broke" is written as the risk avoided, since it isn't known whether shades ever actually merged. If they did, rewrite it as a real bug
+  - This portfolio: "A hover effect that only worked once", the gallery card roll-up bug from session 3. Its last sentence ("I now hover in and out a few times…") is a drafted habit, **keep only if true**
+- **Committed and pushed:** `114a713` on `main`
+- **Live on Vercel: https://jolinma.vercel.app** (project `portfolio-v2`, team "Jolin's projects", Next.js preset, defaults). Every push to `main` redeploys. The first domain, `portfolio-v2-sooty-xi.vercel.app`, now 307-redirects to the new one. Team and deployment URLs (`…-legacylinkstudio.vercel.app`) ask for a Vercel login, so don't share them. The Vercel MCP can't create projects (403), so dashboard steps go through Chrome
+- Checked live without a login: home, About, all case pages, curtain art and the 404 page
+- **Unused images:** `me.webp` and `home-office.webp` moved to `portfolio-v2-unused-images\`. Every other file in `public/` is used (the four `bands/footer-N.webp` through a template string in `Marquee.tsx`). `public/` is now 6.1 MB
+
 ## Start here tomorrow: the other pages
 
 1. **About page** (`/about/`): hero portrait and all three story pictures done Oct 30. FAQ section removed Oct 30 (component, styles and questions deleted; in the first commit if wanted back). Skills and Playground tiles now reuse the homepage art (pegboard on sapphire, playground video on plum). "Open to new work!" on the About page now uses Jolin's open shop art (`about/open-to-work.webp`, 1200 x 1500), on the art's own background `#f2ad30` (`FeatureBand` `bg` now also takes a hex color), and the new `fitBand` option makes the band exactly as tall as the picture (612px at 1440). No placeholder drawings left on the About page
@@ -122,9 +134,9 @@ Jolin felt v2 read as pure web dev. Four changes, look unchanged:
 - Hero animation (Jolin to decide)
 - Phone and tablet check of the whole homepage
 - Copy in Jolin's own voice: `TODO(Jolin)` drafts and band copy in `content/site.ts`
-- Real technical challenge write-up for each project, stack details for Message in a bottle, Busy Season, Legacy Link Studio
+- Stack details for Message in a bottle, Busy Season, Legacy Link Studio
 - Contact form endpoint (`NEXT_PUBLIC_FORM_ENDPOINT` in `.env.local`)
 - Not yet tested: curtain sweep by eye, reduced motion in a real browser, full keyboard pass, Lighthouse
 - Two Elsewhere cards (Dewstick in Figma, Dewstick source code) show a faint seam where the art's textured top meets the flat card color
 - `PillButton` is unused; `AGENTS.md` is managed by Next.js (keep it)
-- Deploy (the repo exists on GitHub, nothing is hosted yet). Decide whether the repo should stay public while `TODO(Jolin)` drafts and the handoff and progress notes are in it
+- Decide whether the repo should stay public while `TODO(Jolin)` drafts and the handoff and progress notes are in it

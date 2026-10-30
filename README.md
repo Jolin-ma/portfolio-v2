@@ -3,6 +3,9 @@
 Jolin Ma's portfolio. Next.js 16 (App Router), React 19, TypeScript and CSS Modules,
 built as a static export so it can be hosted anywhere.
 
+Live at **https://jolinma.vercel.app**. Vercel (project `portfolio-v2`, team "Jolin's projects")
+redeploys on every push to `main`.
+
 ## Run it
 
 ```bash
@@ -46,9 +49,8 @@ Without it, the form still validates but says it isn't connected yet.
 
 ## Still to do
 
-- Real "challenge" write-ups (`challenge` in `content/projects.ts`) and the lines marked `TODO(Jolin)`
+- The lines marked `TODO(Jolin)`
 - Stack details for Message in a bottle, Busy Season and Legacy Link Studio
 - Real illustrations and loops to replace the placeholders
 - Contact form endpoint
 - Lighthouse scores for the "This portfolio" case study
-- Repo and deploy (Vercel)

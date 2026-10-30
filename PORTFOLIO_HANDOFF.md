@@ -4,7 +4,7 @@ Everything decided and built so far for Jolin's new portfolio site. Read this fi
 
 - **Owner:** Jolin Ma, web designer and front-end developer, Oshawa, ON
 - **Current site (stays untouched):** https://jolin-ma.github.io/Portfolio/
-- **New site:** this folder, `portfolio-v2`. Not a git repo yet, not deployed
+- **New site:** this folder, `portfolio-v2`. Repo https://github.com/Jolin-ma/portfolio-v2, live at https://jolinma.vercel.app (Oct 30)
 - **Design reference:** https://www.handsomefrank.com/ (layout and interaction reference)
 - **Status (Oct 28, 2026):** homepage, About page, 5 case study pages and 404 are built, mirroring the Handsome Frank structure, and the static build passes. Art direction locked. Artwork in progress; the site still shows placeholder SVGs
 
@@ -155,7 +155,7 @@ The site's current placeholders (`components/ui/Illustration.tsx`) are drawn in 
 
 ### Case study (`app/work/[slug]/page.tsx`, one template, 5 pages)
 - Header band in the project color with its illustration, date and tags
-- The idea, What I designed (bullets + screenshot), What I built (stack pills + numbered flow diagram), The challenge (placeholder box), Links, Next project band
+- The idea, What I designed (bullets + screenshot), What I built (stack pills + numbered flow diagram), The challenge (problem title, then What broke / What I tried / What fixed it / What I learned), Links, Next project band
 
 ### Other
 - `app/not-found.tsx`: 404 page
@@ -172,7 +172,7 @@ The site's current placeholders (`components/ui/Illustration.tsx`) are drawn in 
 
 The Shopify link is labelled "password protected"; the password isn't on the new site.
 
-Images in `public/images/`: `msg.webp` 1436x876, `busy-season.webp` 1896x910, `dewstick.webp` 2536x1396, `legacylinkstudio.webp` 1878x906, `me.webp` 822x765, `home-office.webp` 1014x764.
+Images in `public/images/`: `msg.webp` 1436x876, `busy-season.webp` 1896x910, `dewstick.webp` 2536x1396, `legacylinkstudio.webp` 1878x906. (`me.webp` and `home-office.webp` were moved to `portfolio-v2-unused-images` on Oct 30.)
 
 ---
 
@@ -183,7 +183,7 @@ Images in `public/images/`: `msg.webp` 1436x876, `busy-season.webp` 1896x910, `d
 - **Static export** (`output: "export"`, `images.unoptimized`, `trailingSlash: true`), builds to `out/`
 - **Fonts via npm:** Fraunces (`@fontsource-variable/fraunces/full.css`, which includes the SOFT and WONK axes) and Hanken Grotesk
 - **Content** lives in typed files in `content/`, so editing words never means touching components
-- **Deploy:** Vercel, later, only with Jolin's OK
+- **Deploy:** Vercel, done Oct 30: https://jolinma.vercel.app, redeploys on every push to `main`
 
 ### Commands
 ```bash
@@ -271,11 +271,11 @@ public/images/            screenshots and photos, later the illustrations
 4. Rewrite the drafted copy in Jolin's own voice (see open items)
 5. Run the unchecked tests in section 6, record Lighthouse scores
 6. Set up the contact form endpoint
-7. `git init`, create the repo, then deploy to Vercel, **only with Jolin's OK**
+7. ~~`git init`, create the repo, then deploy to Vercel~~ done Oct 30
 
 ## 8. Open items
 
-- [ ] Real technical challenge for each project (`challenge` field in `content/projects.ts`)
+- [x] Real technical challenge for each project (Oct 30) (`challenge` field in `content/projects.ts`)
 - [x] Style tests done and approved (Oct 28)
 - [ ] One illustration per project slot (see "Artwork slots the site needs")
 - [ ] Short loop animations once stills are approved
@@ -286,5 +286,5 @@ public/images/            screenshots and photos, later the illustrations
 - [ ] Contact form service and endpoint
 - [ ] Real clients or employers list for the About page, if Jolin wants one (the reference has a client list; ours shows tools instead)
 - [ ] Remove `PillButton` if it stays unused
-- [ ] Repo name and deploy target
+- [x] Repo name and deploy target (`Jolin-ma/portfolio-v2`, https://jolinma.vercel.app)
 - [ ] Optional: custom logo or wordmark in the art direction style
