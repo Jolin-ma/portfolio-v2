@@ -6,6 +6,7 @@
 */
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import CaseHeader from "@/components/case/CaseHeader";
 import CaseSection from "@/components/case/CaseSection";
@@ -147,6 +148,16 @@ export default async function CaseStudyPage({ params }: Params) {
           <ChallengePlaceholder />
         )}
       </CaseSection>
+
+      {/* Dewstick has a second case study on its own page */}
+      {slug === "dewstick" && (
+        <CaseSection id="marketing" title="The marketing side">
+          <p>A three-email welcome series and the GA4 plan I'd use to measure it.</p>
+          <p className={styles.links}>
+            <Link href="/work/dewstick-marketing/">See the email and analytics case study →</Link>
+          </p>
+        </CaseSection>
+      )}
 
       <CaseSection id="links" title="Links">
         <ul role="list" className={styles.links}>
