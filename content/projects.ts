@@ -126,11 +126,27 @@ export const projects: Project[] = [
       "The share flow: a private link that lets a friend reply and keep the same pile growing.",
     ],
     built: {
-      // TODO(Jolin): add the stack and how the pieces connect
       intro:
-        "Typed text is split into single letters that fall and settle on top of each other, so the pile keeps every thought that was written.",
-      stack: [],
-      diagram: [],
+        "Typed text is split into single letters that fall and settle on top of each other, so the pile keeps every thought that was written. The letters are drawn on one canvas instead of one page element each.",
+      stack: [
+        "Next.js 16",
+        "React 19",
+        "TypeScript",
+        "Matter.js",
+        "Canvas 2D",
+        "CSS Modules",
+        "PostgreSQL (Neon)",
+        "Prisma",
+        "Auth.js",
+        "Resend",
+        "Vercel",
+      ],
+      diagram: [
+        "Typed message",
+        "Matter.js physics on a canvas",
+        "Pile saved to PostgreSQL with Prisma",
+        "Private bottle link, reply emails through Resend",
+      ],
     },
     challenge: {
       title: "Keeping the letter pile from covering the writing area",
@@ -139,7 +155,7 @@ export const projects: Project[] = [
       tried:
         "I put a fixed physics body above the writing area as a ceiling. It caught every letter the moment it fell, so none of them reached the real floor and the whole interaction felt wrong. I dropped it.",
       fixed:
-        "Instead of changing where letters could fall, I changed what happens to the ones that had already settled. A check measures the writing area's actual position and removes only settled letters piled above a set height. Letters still moving are left alone, so the fall isn't interrupted.",
+        "Instead of changing where letters could fall, I changed what happens to the ones that had already settled. I measure the top of the writing form with `getBoundingClientRect()` and put a cleanup line 100px above it. Every 250ms, Matter.js checks for letters above that line that are moving slower than 0.8, and removes only those from the physics world. There's no fade: they disappear quietly, and letters still falling are left alone, so the interaction isn't interrupted.",
       learned:
         "A boundary isn't always the right fix for a layout problem, especially with physics involved. Removing settled letters was much simpler than trying to control every letter on the way down. Now I look at what is actually causing the problem before I change how the whole system behaves.",
     },
@@ -183,20 +199,24 @@ export const projects: Project[] = [
       "Video front and centre, since the work itself is the strongest pitch.",
     ],
     built: {
-      // TODO(Jolin): add the stack and how the pieces connect
       intro:
-        "A marketing site built to load video quickly and stay easy to update as new work comes in.",
-      stack: [],
-      diagram: [],
+        "A static marketing site with no build step, built to load video quickly and stay easy to update as new work comes in.",
+      stack: ["HTML", "CSS", "JavaScript", "H.264 video", "WebP", "Formspree", "Vercel"],
+      diagram: [
+        "Static HTML, CSS and JavaScript",
+        "Compressed videos with WebP posters",
+        "Contact form posts to Formspree",
+        "Hosted on Vercel",
+      ],
     },
     challenge: {
       title: "Making a video-heavy page load smoothly",
       broke:
-        "Busy Season is built around video ads, so the videos had to look good and play smoothly. But the original files were large, and loading every video at once would slow the page down, especially on a phone. I wanted video to be a big part of the page without making anyone wait for it to become usable.",
+        "Busy Season is built around video ads, so the videos had to look good and play smoothly. But the originals were huge. The HVAC clip alone was 66.2 MB at 1080 × 1920, and the Work page would have tried to autoplay 114 MB of video as soon as it opened, which is brutal on a phone.",
       tried:
         "I started with the large original files, and shrinking them wasn't enough on its own. I also had to control when each video loaded and how it behaved on a small screen.",
       fixed:
-        "I compressed the videos into smaller H.264 files and made WebP poster images to show before playback. The video cards now load only when they scroll into view, using the Intersection Observer API. Videos start muted and play inline, which works better on mobile, and the hero animation stops for visitors who ask their system for reduced motion.",
+        "I standardized every video to H.264 at 540 × 960 and 24fps, with AAC audio and +faststart so playback can begin before the whole file has downloaded. That took the HVAC clip from 66.2 MB to 2.81 MB, about 95.8% smaller. Each video also has a WebP poster image, and Intersection Observer starts a video only when the visitor scrolls to it. Videos are muted and play inline, which works on mobile, and the hero animation stops for visitors who ask their system for reduced motion.",
       learned:
         "Performance isn't only about making each file smaller. It's also about deciding when the browser needs it. On a media-heavy page I now think through what appears right away, what can wait until the visitor scrolls, and how it behaves on a phone. I also test the real loading behaviour instead of assuming a page that works on my desktop works everywhere.",
     },
@@ -349,22 +369,35 @@ export const projects: Project[] = [
       "A simple path from watching a sample film to starting a booking.",
     ],
     built: {
-      // TODO(Jolin): add the stack and how the pieces connect
       intro:
-        "A site built around the films, with video that loads without slowing down the first screen.",
-      stack: [],
-      diagram: [],
+        "A prototype site built around the films, currently in waitlist mode. It includes a guided intake and a private capsule link that stays locked until a date the buyer picks.",
+      stack: [
+        "Next.js 15",
+        "React 19",
+        "TypeScript",
+        "Tailwind CSS",
+        "Framer Motion",
+        "Formspree",
+        "Resend",
+        "Vercel",
+      ],
+      diagram: [
+        "Guided intake, a multi-step Framer Motion flow",
+        "Answers sent to Formspree",
+        "Private capsule link, locked until the reveal date",
+        "Hosted on Vercel",
+      ],
     },
     challenge: {
       title: "Making a love story feel like theirs",
       broke:
         "The hard part was making the film feel like it belonged to the couple and not like a generic romantic video with their names added. The small details, the memories and the way two people met are what make the story matter, and I wanted them to shape the film instead of just appearing as text on screen.",
       tried:
-        "I started by making the film look good. That wasn't enough: a beautiful video can still feel impersonal if the story doesn't reflect the couple's relationship. I had to look harder at how their memories were being used.",
+        "I started by making the film look good. An early version felt more like a romantic slideshow than a personal story: a beautiful video can still feel impersonal if the story doesn't reflect the couple's relationship.",
       fixed:
-        "I built the story around the couple's actual memories and milestones. I treated the project as a personalized story where what the couple tells me shapes the result, and not as a romantic video with a theme.",
+        "I changed the direction so the film follows the couple's relationship, starting with how they met and building toward a meaningful moment. I designed a guided intake with prompts about how they met, their early days, a secret detail, the tone and the music, so each couple's answers shape a different story. I direct the initial story and script myself, then use AI-assisted writing to refine the script, improve the flow and strengthen the emotional moments. AI helps with refinement; the decisions about what the story should say and how it unfolds stay mine.",
       learned:
-        "Personalization has to be part of the experience from the start, not added at the end. Now I think about what information a person gives, how it changes the result, and whether the final film feels connected to them.",
+        "Personalization starts with the questions you ask, not the final visuals. Now I think about how information moves from the intake into the story before I decide how the film should look. The site is still a prototype in waitlist mode, so I keep concept examples separate from real customer stories and don't present made-up scenarios as finished client work.",
     },
     links: [{ label: "Live site", href: "https://www.legacylinkstudio.com/" }],
   },

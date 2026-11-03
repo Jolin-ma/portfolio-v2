@@ -103,7 +103,7 @@ export default async function CaseStudyPage({ params }: Params) {
               loading="lazy"
               decoding="async"
             />
-            <figcaption>The finished homepage. Figma frames and before and after views coming soon.</figcaption>
+            <figcaption>The finished homepage.</figcaption>
           </figure>
         )}
       </CaseSection>
@@ -111,14 +111,12 @@ export default async function CaseStudyPage({ params }: Params) {
       <CaseSection id="built" title="What I built">
         <p>{project.built.intro}</p>
 
-        {project.built.stack.length > 0 ? (
+        {project.built.stack.length > 0 && (
           <ul role="list" className={styles.stack} aria-label="Stack">
             {project.built.stack.map((tool) => (
               <li key={tool}>{tool}</li>
             ))}
           </ul>
-        ) : (
-          <p className={styles.note}>Stack details coming soon.</p>
         )}
 
         {/* How the pieces connect: an ordered list drawn as a flow diagram */}
