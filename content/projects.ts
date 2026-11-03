@@ -133,15 +133,15 @@ export const projects: Project[] = [
       diagram: [],
     },
     challenge: {
-      title: "Balancing visual design and functionality",
+      title: "Keeping the letter pile from covering the writing area",
       broke:
-        "I wanted the website to feel like an interactive experience rather than a traditional product landing page. However, creating a visually engaging design while keeping the experience intuitive was a challenge.",
+        "As letters pile up in the bottle, the pile can grow tall enough to cover the writing area. I wanted the letters to keep behaving like physical objects, but there still had to be room to write the next entry.",
       tried:
-        "I explored different visual directions, experimented with animations, and considered how users would interact with the main elements of the experience.",
+        "I put a fixed physics body above the writing area as a ceiling. It caught every letter the moment it fell, so none of them reached the real floor and the whole interaction felt wrong. I dropped it.",
       fixed:
-        "I refined the visual direction around the bottle concept, using it as the central element of the experience and keeping the interactions focused on the storytelling.",
+        "Instead of changing where letters could fall, I changed what happens to the ones that had already settled. A check measures the writing area's actual position and removes only settled letters piled above a set height. Letters still moving are left alone, so the fall isn't interrupted.",
       learned:
-        "I learned that animation should support the user's experience rather than simply decorate a page. Visual storytelling also requires careful consideration of usability and interaction.",
+        "A boundary isn't always the right fix for a layout problem, especially with physics involved. Removing settled letters was much simpler than trying to control every letter on the way down. Now I look at what is actually causing the problem before I change how the whole system behaves.",
     },
     links: [{ label: "Live site", href: "https://www.msg-in-a-bottle.com/" }],
   },
@@ -190,15 +190,15 @@ export const projects: Project[] = [
       diagram: [],
     },
     challenge: {
-      title: "Creating a distinctive brand experience",
+      title: "Making a video-heavy page load smoothly",
       broke:
-        "I wanted Busy Season to stand out from typical marketing agency websites. A conventional agency layout didn't communicate the bold, creative direction I wanted for the brand.",
+        "Busy Season is built around video ads, so the videos had to look good and play smoothly. But the original files were large, and loading every video at once would slow the page down, especially on a phone. I wanted video to be a big part of the page without making anyone wait for it to become usable.",
       tried:
-        "I explored bold colours, expressive typography, visual compositions, and motion-based elements to create a stronger identity.",
+        "I started with the large original files, and shrinking them wasn't enough on its own. I also had to control when each video loaded and how it behaved on a small screen.",
       fixed:
-        "I developed a more expressive art direction that reflects what the studio does: creative video ads that agencies deliver to their home service clients, with Busy Season behind the scenes.",
+        "I compressed the videos into smaller H.264 files and made WebP poster images to show before playback. The video cards now load only when they scroll into view, using the Intersection Observer API. Videos start muted and play inline, which works better on mobile, and the hero animation stops for visitors who ask their system for reduced motion.",
       learned:
-        "I learned how visual identity, layout, and motion can communicate a brand's personality. I also learned that a website needs to communicate its business value, not just look visually interesting.",
+        "Performance isn't only about making each file smaller. It's also about deciding when the browser needs it. On a media-heavy page I now think through what appears right away, what can wait until the visitor scrolls, and how it behaves on a phone. I also test the real loading behaviour instead of assuming a page that works on my desktop works everywhere.",
     },
     links: [{ label: "Live site", href: "https://www.busyseason.ca/" }],
   },
@@ -356,15 +356,15 @@ export const projects: Project[] = [
       diagram: [],
     },
     challenge: {
-      title: "Creating a personalized storytelling experience",
+      title: "Making a love story feel like theirs",
       broke:
-        "One challenge was figuring out how to turn personal memories and relationship details into a cohesive love story. Each couple has a different history, so a generic storytelling structure wouldn't create the personal experience I wanted.",
+        "The hard part was making the film feel like it belonged to the couple and not like a generic romantic video with their names added. The small details, the memories and the way two people met are what make the story matter, and I wanted them to shape the film instead of just appearing as text on screen.",
       tried:
-        "I explored how to organize relationship details, important memories, and key moments into a structured storytelling process. I also experimented with AI-assisted creative tools to explore how written memories could become visual scenes.",
+        "I started by making the film look good. That wasn't enough: a beautiful video can still feel impersonal if the story doesn't reflect the couple's relationship. I had to look harder at how their memories were being used.",
       fixed:
-        "I developed a more structured approach to storytelling, organizing personal details into a narrative with a beginning, meaningful moments, and an emotional ending. This made it easier to guide the creative process while keeping each story personal.",
+        "I built the story around the couple's actual memories and milestones. I treated the project as a personalized story where what the couple tells me shapes the result, and not as a romantic video with a theme.",
       learned:
-        "I learned that AI-generated content still needs creative direction. The quality of the final result depends on how well information is organized, how the story is structured, and how visual elements support the emotional message.",
+        "Personalization has to be part of the experience from the start, not added at the end. Now I think about what information a person gives, how it changes the result, and whether the final film feels connected to them.",
     },
     links: [{ label: "Live site", href: "https://www.legacylinkstudio.com/" }],
   },
