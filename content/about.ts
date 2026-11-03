@@ -68,7 +68,7 @@ export const counter = {
   points: [
     {
       title: "Online orders",
-      text: "For the last two years I've worked in the store's Shopify admin every day: fulfilling orders, keeping customer records tidy and merging duplicate customer profiles. I also worked through the move from the old system to Shopify, so I saw where it got easier and where it got harder for staff and customers.",
+      text: "I've spent the last two years in the store's Shopify admin: fulfilling orders, keeping customer records tidy and merging duplicate customer profiles. I also worked through the move from the old system to Shopify, so I saw where it got easier and where it got harder for staff and customers.",
     },
     {
       title: "Buy online, pick up in store",

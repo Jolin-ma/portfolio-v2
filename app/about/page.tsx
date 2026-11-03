@@ -46,7 +46,7 @@ export default function AboutPage() {
           ink="cream"
           accent="marigold"
           title="Playground."
-          text="Illustration and motion experiments, kept apart from the client work."
+          text="Illustration and motion experiments, kept apart from my main projects."
           link={{ label: "Have a play.", href: "/#playground" }}
           media={
             <LoopVideo

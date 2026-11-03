@@ -114,7 +114,7 @@ export const bands = {
   },
   playground: {
     title: "Playground.",
-    text: "Illustration and motion experiments, kept apart from the client work.",
+    text: "Illustration and motion experiments, kept apart from my main projects.",
   },
 };
 
@@ -134,8 +134,8 @@ export const whatIDo = {
     },
     {
       title: "Run the store",
-      text: "Seven years behind a retail counter, the last two working in the Shopify admin every day.",
-      items: ["Shopify admin", "Product data", "Listings", "Order flow"],
+      text: "Seven years behind a retail counter, the last two handling online orders in the Shopify admin.",
+      items: ["Shopify admin", "Pickup orders", "Customer records", "Order flow"],
       link: {
         label: "Behind the counter.",
         href: "/about/#counter",

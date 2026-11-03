@@ -1,7 +1,7 @@
 /*
   Playground.tsx
   Full band: a looping video on the left (the projects' objects playing
-  in a playground), text on the right. Kept apart from the client work.
+  in a playground), text on the right. Kept apart from the main projects.
 */
 
 import FeatureBand from "@/components/ui/FeatureBand";
