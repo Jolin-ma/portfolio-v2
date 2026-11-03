@@ -8,7 +8,7 @@
 */
 
 export const brief =
-  "Dewstick is a made-up tinted lip balm, half color, half skincare, that I built as a real Shopify store with a test-mode checkout. It's aimed at people who already like sheer tints and find new products on their phone through short videos. The challenge: someone joins the email list but hasn't bought, and the brand has no reviews, no traffic and no customers to point to. I needed a way to turn that signup into a first order without faking proof or handing out a discount, and a way to tell if it worked.";
+  "Dewstick is a made-up tinted lip balm, half colour, half skincare, that I built as a real Shopify store with a test-mode checkout. It's aimed at people who already like sheer tints and find new products on their phone through short videos. The challenge: someone joins the email list but hasn't bought, and the brand has no reviews, no traffic and no customers to point to. I needed a way to turn that signup into a first order without faking proof or handing out a discount, and a way to tell if it worked.";
 
 /* Section 2: what I looked at, then what I did about it */
 export const decisions = [
@@ -29,8 +29,8 @@ export const decisions = [
   },
   {
     looked: "Rhode and Summer Fridays",
-    found: "Both already sell sheer color plus lip care, and one review put Summer Fridays at US$24, close to Dewstick's $22 CAD. Dewstick can't out-famous them.",
-    decided: "Give email 2 to what's under the color, since the formula is the part Dewstick can explain.",
+    found: "Both already sell sheer colour plus lip care, and one review put Summer Fridays at US$24, close to Dewstick's $22 CAD. Dewstick can't out-famous them.",
+    decided: "Give email 2 to what's under the colour, since the formula is the part Dewstick can explain.",
   },
   {
     looked: "My own store",

@@ -180,7 +180,7 @@ export const projects: Project[] = [
     // TODO(Jolin): replace with your real design decisions
     designed: [
       "A site that speaks to agency owners first: what they get, how it fits their workflow, and why the client never sees Busy Season.",
-      "Video front and center, since the work itself is the strongest pitch.",
+      "Video front and centre, since the work itself is the strongest pitch.",
     ],
     built: {
       // TODO(Jolin): add the stack and how the pieces connect
@@ -211,7 +211,7 @@ export const projects: Project[] = [
     ink: "plum",
     illustration: "balm",
     summary:
-      "A tinted lip balm brand, half color, half skincare, designed in Figma and built as a bilingual store on five platforms.",
+      "A tinted lip balm brand, half colour, half skincare, designed in Figma and built as a bilingual store on five platforms.",
     details:
       "Five shades set up as variants of one product, a set of five with a compare-at price, and a real Shopify checkout in test mode, in English and Chinese. Then the same store built on WordPress, Next.js, Elementor and Kadence to compare.",
     teaser: "Swipe on.",
@@ -233,7 +233,7 @@ export const projects: Project[] = [
     curtainArt: { src: "/images/curtain/curtain-dewstick.webp" },
     menuArt: "/images/menu/menu-dewstick.webp",
     featured: true,
-    idea: "A tinted lip balm brand, half color, half skincare. Designed in Figma and built as a bilingual store across Shopify, WordPress, Next.js, Elementor and Kadence.",
+    idea: "A tinted lip balm brand, half colour, half skincare. Designed in Figma and built as a bilingual store across Shopify, WordPress, Next.js, Elementor and Kadence.",
     // From the Dewstick repo (PRODUCT.md, README, the Shopify theme). The brand,
     // prices and shade names are made up; the store setup is real.
     store: {
@@ -246,7 +246,7 @@ export const projects: Project[] = [
         },
         {
           title: "Why the shades are laid out this way",
-          text: "The shade names are moods (nectar, poppy, peony, blush, orchid), so every option shows a color dot and the plain color next to the name: nectar / coral, orchid / berry rose. Nobody has to guess. Picking a shade swaps the photo and price at once and puts the shade in the link, so a shared link opens on the same shade. The homepage row shows three shades and the set, not all five, because most visitors arrive on a phone from a social post and have a few seconds to decide.",
+          text: "The shade names are moods (nectar, poppy, peony, blush, orchid), so every option shows a colour dot and the plain colour next to the name: nectar / coral, orchid / berry rose. Nobody has to guess. Picking a shade swaps the photo and price at once and puts the shade in the link, so a shared link opens on the same shade. The homepage row shows three shades and the set, not all five, because most visitors arrive on a phone from a social post and have a few seconds to decide.",
         },
         {
           title: "Cart and checkout",
@@ -254,7 +254,7 @@ export const projects: Project[] = [
         },
         {
           title: "Bilingual product pages",
-          text: "English and Chinese are equal, not a translation added later. The store uses Shopify's own languages with /zh-cn/ links, and every string ships in both, down to the color names (coral is 珊瑚色). The headless Next.js build pulls the Chinese product copy straight from Shopify.",
+          text: "English and Chinese are equal, not a translation added later. The store uses Shopify's own languages with /zh-cn/ links, and every string ships in both, down to the colour names (coral is 珊瑚色). The headless Next.js build pulls the Chinese product copy straight from Shopify.",
         },
         {
           title: "Honest where proof is missing",
@@ -379,7 +379,7 @@ export const projects: Project[] = [
     summary:
       "The site you're on. A case study about the page transition, the accessible menu, reduced motion and image loading.",
     details:
-      "Flat color, simple rounded shapes and a risograph print look, with a strict seven-color palette whose text pairs were all checked for contrast. Motion is small and always has a job, and the whole site builds to plain HTML that can be hosted anywhere.",
+      "Flat colour, simple rounded shapes and a risograph print look, with a strict seven-colour palette whose text pairs were all checked for contrast. Motion is small and always has a job, and the whole site builds to plain HTML that can be hosted anywhere.",
     teaser: "Look under the hood.",
     tags: ["Next.js", "Accessibility"],
     image: null,
@@ -394,8 +394,8 @@ export const projects: Project[] = [
     featured: false,
     idea: "A portfolio that shows creative visual thinking and practical front-end skills at the same time. The site itself is the proof: if the motion, accessibility and speed are done properly, you can feel it while browsing.",
     designed: [
-      "An original art direction: flat color, simple rounded shapes and a risograph print look, with the fills slightly out of line with the outlines.",
-      "A strict palette of seven colors. Each section uses one background, plum, cream and at most two accents, and every text and background pair was checked for contrast.",
+      "An original art direction: flat colour, simple rounded shapes and a risograph print look, with the fills slightly out of line with the outlines.",
+      "A strict palette of seven colours. Each section uses one background, plum, cream and at most two accents, and every text and background pair was checked for contrast.",
       "Motion that is small and has a job: the curtain tells you the page is changing, the card swap shows the real work behind the illustration.",
     ],
     built: {

@@ -43,12 +43,12 @@ export const story: {
     color: "blush",
   },
   {
-    text: "Now I'm open to roles in web design, e-commerce and digital marketing: anywhere thoughtful design, clean code and a well-run store come together to make websites people actually enjoy using.",
+    text: "Now I'm looking for a role in web design, e-commerce or digital marketing, ideally somewhere I can design a page, build it and see how it sells.",
     image: {
       src: "/images/about/story-3-doorway.webp",
       width: 1760,
       height: 1314,
-      alt: "Illustration of Jolin Ma waving while stepping out of an open door shaped like a browser window, with color swatches, code brackets, a shopping bag and a cart around the doorway",
+      alt: "Illustration of Jolin Ma waving while stepping out of an open door shaped like a browser window, with colour swatches, code brackets, a shopping bag and a cart around the doorway",
     },
     color: "pistachio",
   },

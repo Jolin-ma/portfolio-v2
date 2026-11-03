@@ -60,7 +60,7 @@ export default function AboutPage() {
         />
       </BandPair>
 
-      <Gallery id="explore" intro="Explore the work. Pick an image below to dive into a case study." />
+      <Gallery id="explore" intro="Pick an image below to open a case study." />
     </>
   );
 }

@@ -59,14 +59,14 @@ export const site = {
   status: "Open to web design opportunities",
   tagline: "I design and build websites and online stores",
   about:
-    "I'm a web designer in Oshawa who designs and builds websites that look great, feel intuitive, and work on every screen.",
+    "I'm a web designer in Oshawa. I design websites in Figma, then build them myself so they work on a phone as well as a desktop.",
   aboutMore: [
     "I start in Figma, sketching layouts and testing ideas until the page feels right. Then I build it myself, so the design decisions survive all the way to the browser.",
     "I care about the small stuff: how a button feels, whether a menu works with a keyboard, and how fast the first screen shows up.",
   ],
   skills: ["Web Design", "UI / UX", "Responsive", "Front-End"],
   contactLine:
-    "I'm always excited to work on projects where thoughtful design and clean code come together to create websites people actually enjoy using.",
+    "Got a site to design or a store to set up? Send me a note and tell me what you're making.",
   github: "https://github.com/Jolin-ma",
   marquee: [
     "Design in Figma",
@@ -78,7 +78,7 @@ export const site = {
 
 /** Hero headline (two lines) and the accent line under it */
 export const hero = {
-  title: "I design and build engaging websites and online stores.",
+  title: "I design and build websites and online stores.",
   subline: "Web designer in Oshawa, ON.",
 };
 
@@ -100,11 +100,11 @@ export const bands = {
   },
   contact: {
     title: "Contact.",
-    text: "I'm always excited to work on projects where thoughtful design and clean code come together to create websites people actually enjoy using.",
+    text: "Got a site to design or a store to set up? Send me a note and tell me what you're making.",
   },
   about: {
     title: "So who is Jolin?",
-    text: "A web designer in Oshawa who designs and builds websites that look great, feel intuitive, and work on every screen.",
+    text: "A web designer in Oshawa who designs in Figma, builds the site too and has spent seven years behind a retail counter.",
     link: { label: "Tell me more.", href: "/about/", curtain: aboutCurtain },
   },
   skills: {
@@ -216,7 +216,7 @@ export const heroPairs: {
 export const process = [
   {
     title: "Design in Figma",
-    text: "Layouts, type and color worked out first, with real content, at desktop and phone sizes.",
+    text: "Layouts, type and colour worked out first, with real content, at desktop and phone sizes.",
   },
   {
     title: "Build in code",
