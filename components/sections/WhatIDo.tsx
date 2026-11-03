@@ -1,7 +1,7 @@
 /*
   WhatIDo.tsx
   "What I do": one cream band with two lanes side by side, Build and
-  Run the store. Each lane has a line of text, its tools as pills and
+  Work the store. Each lane has a line of text, its tools as pills and
   one big link. Stacks on phones. Words live in content/site.ts.
 */
 

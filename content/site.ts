@@ -120,7 +120,7 @@ export const bands = {
 
 /*
   "What I do" band on the homepage: two lanes side by side.
-  Build is the web side, Run the store is the shop side (from the
+  Build is the web side, Work the store is the shop side (from the
   Royal Distributing counter and the Dewstick store).
 */
 export const whatIDo = {
@@ -133,7 +133,7 @@ export const whatIDo = {
       link: { label: "See the work.", href: "/#work" },
     },
     {
-      title: "Run the store",
+      title: "Work the store",
       text: "Seven years behind a retail counter, the last two handling online orders in the Shopify admin.",
       items: ["Shopify admin", "Pickup orders", "Customer records", "Order flow"],
       link: {
