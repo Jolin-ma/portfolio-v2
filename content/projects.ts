@@ -318,7 +318,6 @@ export const projects: Project[] = [
     },
     links: [
       { label: "Live site (Next.js)", href: "https://dewstick.vercel.app/" },
-      { label: "Static build", href: "https://dewstick-static.vercel.app/" },
       {
         label: "Shopify store",
         href: "https://dewstick.myshopify.com/",
